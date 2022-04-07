@@ -8,7 +8,7 @@ export default function ListaCadastro() {
 
     const [user, setUser] = useState([]);
     const [idCadastro, setIdCadastro] = useState(0);
-    const [param, setParam] = useState(0);
+    const [debitos, setDebitos] = useState([]);
 
     useEffect(() => {
         axios.get('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/cadastros',
@@ -20,9 +20,21 @@ export default function ListaCadastro() {
             })
     }, []);
 
-    function handleClick(e) {
-        setParam(idCadastro);
-        console.log('param ', param);
+    function getDebito() {
+        if (idCadastro) {
+
+            axios.get('http://localhost/dbv-api/debitos/' + idCadastro)
+                .then(async (response) => {
+                    setDebitos(await response.data)
+                })
+                .catch((error) => { })
+                ;
+        }
+    };
+
+    function handleClick() {
+        getDebito();
+        console.log('debitos ', debitos);
     }
 
     return (
@@ -41,9 +53,25 @@ export default function ListaCadastro() {
 
                 </FormGroup>
             </Form>
-            <Button onClick={(e) => handleClick(e)}>Debito</Button>
+            <Button onClick={handleClick}>Débitos</Button>
             <Row>
-                <Debitos setIdCadastro={idCadastro}> </Debitos>
+                <span>Debito</span>
+                <table>
+                    {/* <thead>
+                        <th>Descricao</th>
+                        <th>Valor</th>
+                        <th>Vencimento</th>
+                    </thead> */}
+                    <tbody>
+                        {debitos.map(debito => {
+                            <tr>
+                                <td key={debito.iddebito}>debito.descdebito</td>
+                                <td key={debito.iddebito}>debito.valordebito</td>
+                                <td key={debito.iddebito}>debito.vctodebito</td>
+                            </tr>
+                        })}
+                    </tbody>
+                </table>
             </Row>
         </Fragment>
     )
