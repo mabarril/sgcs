@@ -45,13 +45,13 @@ export default function Debitos({ idCadastro }) {
                         {console.log(debitos.iddebito)}
                         {debitos.map(debito => {
                             return (
-                                <tr>
-                                    <td key={debito.iddebito}>
+                                <tr key={debito.iddebito}>
+                                    <td >
                                         {debito.descdebito}
                                     </td>
-                                    <td  key={debito.iddebito}>{formataMoeda(debito.valordebito)}</td>
-                                    <td  key={debito.iddebito}>{formataData(debito.vctodebito)}</td>
-                                    <td  key={debito.iddebito}>{debito.idpgto ? 'Pago' : <input type={"checkbox"} />}</td>
+                                    <td>{formataMoeda(debito.valordebito)}</td>
+                                    <td>{formataData(debito.vctodebito)}</td>
+                                    <td>{debito.idpgto ? 'Pago' : <input type={"checkbox"} />}</td>
                                 </tr>
                             )
                         })}
