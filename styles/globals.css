@@ -14,3 +14,28 @@ a {
 * {
   box-sizing: border-box;
 }
+
+
+.header-class {
+  height: 50px;
+  background-color: #292961;
+  color: #fff;
+}
+
+.web-class {
+  display: block;
+}
+
+.mobile-class {
+  display: none;
+}
+
+@media (max-width: 767.98px) {
+  .web-class {
+    display: none;
+  }
+
+  .mobile-class {
+    display: block;
+  }
+}
