@@ -72,7 +72,7 @@ export default function ListaCadastro() {
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
-                <Modal.Body><Debito /></Modal.Body>
+                <Modal.Body><Debito idCadastro={idCadastro} /></Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Close

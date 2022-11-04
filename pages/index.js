@@ -9,11 +9,10 @@ console.log("Home ...")
 
 export default function Home() {
   return (
-    <Fragment>
+    <>
       <Container>
-        <MenuPrincipal />
         <Main />
       </Container>
-    </Fragment>
+    </>
   )
 }
