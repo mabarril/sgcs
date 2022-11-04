@@ -16,7 +16,7 @@ export default function Debito({ idCadastro }) {
 
     const [submitted, setSubmitted] = useState(false);
     const [valid, setValid] = useState(false);
-    
+
 
     // const getDebito = async (idCadastro) => {
     //     await axios.get('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/' + idCadastro)
@@ -62,7 +62,7 @@ export default function Debito({ idCadastro }) {
         <Fragment>
             <Form onSubmit={handleSubmit}>
                 <Row>
-                    {submitted && <div class='success-message'>Débito gravado com sucesso!</div>}
+                    {submitted && <div className="success-message">Débito gravado com sucesso!</div>}
                 </Row>
                 <Row>
                     <FormGroup>
