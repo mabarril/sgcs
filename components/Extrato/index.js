@@ -6,7 +6,6 @@ import Debito from "../Debito";
 export default function Extrato({ idCadastro }) {
 
     const [debitos, setDebitos] = useState([]);
-    const [incluirDebito, setIncluirDebito] = useState(true);
 
 
     const getDebito = async (idCadastro) => {
@@ -14,7 +13,6 @@ export default function Extrato({ idCadastro }) {
             .then((response) => setDebitos(response.data))
             .catch((error) => console.error(error));
         console.log('debitos ', debitos);
-        setIncluirDebito(false);
     };
 
     const formataData = (param) => {
@@ -28,7 +26,6 @@ export default function Extrato({ idCadastro }) {
     }
 
     useEffect(() => {
-        console.log(idCadastro);
         getDebito(idCadastro);
     }, [idCadastro]);
 

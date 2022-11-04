@@ -5,17 +5,32 @@ import { Input } from "reactstrap";
 
 export default function Debito({ idCadastro }) {
 
-    const [debito, setDebito] = useState([]);
+    const [values, setValues] = useState({
+        idCadastro: idCadastro,
+        idMatricula: 1,
+        descDebito: '',
+        valorDebito: 0,
+        idTipDebito: 1,
+        vctoDebito:''
+    });
 
-    const getDebito = async (idCadastro) => {
-        await axios.get('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/' + idCadastro)
-            .then((response) => setDebitos(response.data))
-            .catch((error) => console.error(error));
-        console.log('debito ', debito);
-    };
+    const [submitted, setSubmitted] = useState(false);
+    const [valid, setValid] = useState(false);
 
-    const postDebito = async (idCadastro) => {
-        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/')
+    // const getDebito = async (idCadastro) => {
+    //     await axios.get('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/' + idCadastro)
+    //         .then((response) => setDebitos(response.data))
+    //         .catch((error) => console.error(error));
+    //     console.log('debito ', debito);
+    // };
+
+    const postDebito = async () => {
+        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/',{
+            headers : {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+            }
+          }, values)
     }
 
     const formataData = (param) => {
@@ -28,14 +43,26 @@ export default function Debito({ idCadastro }) {
         return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (values.descDebito && values.valorDebito && values.vctoDebito) {
+            setValid(true);
+        }
+        postDebito();
+        setSubmitted(true);
+    };
+
     useEffect(() => {
         console.log(idCadastro);
-        getDebito(idCadastro);
+        // getDebito(idCadastro);
     }, [idCadastro]);
 
     return (
         <Fragment>
-            <Form>
+            <Form onSubmit={handleSubmit}>
+                <Row>
+                    {submitted && <div class='success-message'>Débito gravado com sucesso!</div>}
+                </Row>
                 <Row>
                     <FormGroup>
                         <label>Descrição do Débito</label>
@@ -43,7 +70,14 @@ export default function Debito({ idCadastro }) {
                             id="descricaoDebito"
                             name="descricaoDebito"
                             type="text"
+                            value={values.descDebito}
+                            onChange={(e) => setValues((values)=>({
+                                ...values,
+                                descDebito: e.target.value,
+                            })
+                            )}
                         />
+                        { submitted && !values.descDebito &&  <span id="descricao-error">Descrição obrigatória</span>}
                     </FormGroup>
                 </Row>
                 <Row>
@@ -53,7 +87,13 @@ export default function Debito({ idCadastro }) {
                             id="valorDebito"
                             name="valorDebito"
                             type="text"
+                            value={values.valorDebito}
+                            onChange={(e) => setValues((values)=>({
+                                ...values,
+                                valorDebito: e.target.value,
+                            }))}
                         />
+                        {submitted && !values.valorDebito && <span id="valor-error">Valor obrigatório</span>}
                     </FormGroup>
                 </Row>
                 <Row>
@@ -62,13 +102,19 @@ export default function Debito({ idCadastro }) {
                         <Input
                             id="vencimentoDebito"
                             name="vencimentoDebito"
-                            type="text"
+                            type="date"
+                            value={values.vctoDebito}
+                            onChange={(e) => setValues((values)=>({
+                                ...values,
+                                vctoDebito: e.target.value,
+                            }))}
                         />
+                        {submitted && !values.vctoDebito && <span id="vcto-error">Vencimento obrigatório</span>}
                     </FormGroup>
                 </Row>
                 <Row>
-                    <Button>
-                        Sign in
+                    <Button type="submit">
+                        Registrar
                     </Button>
                 </Row>
             </Form>
