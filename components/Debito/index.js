@@ -26,12 +26,7 @@ export default function Debito({ idCadastro }) {
     // };  
 
     const postDebito = async () => {
-        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/',{
-            headers : {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*',
-            }
-          }, values)
+        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/', values)
     }
 
     const formataData = (param) => {
