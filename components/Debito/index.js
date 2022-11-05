@@ -3,7 +3,7 @@ import { Form, Table, Row, Col, FormGroup, Button, Label } from 'react-bootstrap
 import axios from "axios";
 import { Input } from "reactstrap";
 
-export default function Debito({ idCadastro }) {
+export default function Debito({ idCadastro, handleClose }) {
 
     const [values, setValues] = useState({
         idCadastro: idCadastro,
@@ -26,7 +26,10 @@ export default function Debito({ idCadastro }) {
     // };  
 
     const postDebito = async () => {
-        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/', values)
+        console.log(values);
+        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/', values
+        );
+        handleClose();
     }
 
     const formataData = (param) => {

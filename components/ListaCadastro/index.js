@@ -9,28 +9,20 @@ export default function ListaCadastro() {
 
     const [user, setUser] = useState([]);
     const [idCadastro, setIdCadastro] = useState(0);
-    const [incluirDebito, setIncluirDebito] = useState(false);
     const [extrato, setExtrato] = useState(false);
-    const [botaoDebito, setBotaoDebito] = useState(false);
-    const [modal, setModal] = useState(false);
 
     const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    const formDebito = () => {
-        console.log('oi');
-        setModal(true);
-        console.log(modal);
-        setBotaoDebito(!botaoDebito);
+    const handleClose = () => {
+        setShow(false);
+        setExtrato(false);
+        setExtrato(true);
     };
+    const handleShow = () => setShow(true);
 
     const handleSelect = (id) => {
         setIdCadastro(id);
-        setIncluirDebito(false);
         setExtrato(true);
-        setBotaoDebito(true);
     }
 
     useEffect(() => {
@@ -62,7 +54,7 @@ export default function ListaCadastro() {
                     {extrato && idCadastro ? <Extrato idCadastro={idCadastro} /> : ''}
                 </Row>
                 <Row>
-                    {botaoDebito ? <Button className="m-1" variant="primary" size="large" onClick={handleShow}>Débito</Button> : ''}
+                    <Button className="m-1" variant="primary" size="large" onClick={handleShow}>Débito</Button> 
                 </Row>
                 {/* <Row className="m-3">
                     {incluirDebito ? <Debito /> : ''}
@@ -72,15 +64,15 @@ export default function ListaCadastro() {
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
-                <Modal.Body><Debito idCadastro={idCadastro} /></Modal.Body>
-                <Modal.Footer>
+                <Modal.Body><Debito idCadastro={idCadastro} handleClose={handleClose} /></Modal.Body>
+                {/* <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleClose}>
                         Save Changes
                     </Button>
-                </Modal.Footer>
+                </Modal.Footer> */}
             </Modal>
         </>
     )

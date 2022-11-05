@@ -41,7 +41,6 @@ export default function Extrato({ idCadastro }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {console.log(debitos.iddebito)}
                     {debitos.map(debito => {
                         return (
                             <tr key={debito.iddebito}>
