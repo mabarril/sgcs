@@ -9,10 +9,6 @@ console.log("Home ...")
 
 export default function Home() {
   return (
-    <>
-      <Container>
         <Main />
-      </Container>
-    </>
   )
 }

@@ -3,7 +3,7 @@ import { Form, Table, Row, Col, FormGroup, Button, Label } from 'reactstrap';
 import axios from "axios";
 import { Input } from "reactstrap";
 
-export default function Debito({ idCadastro, handleClose }) {
+export default function Debito({ idCadastro, handleCloseDebito }) {
 
     const [values, setValues] = useState({
         idCadastro: idCadastro,
@@ -22,7 +22,7 @@ export default function Debito({ idCadastro, handleClose }) {
         console.log(values);
         await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/', values
         );
-        handleClose();
+        handleCloseDebito();
     }
 
     const formataData = (param) => {
@@ -130,7 +130,7 @@ export default function Debito({ idCadastro, handleClose }) {
                 </Row>
                 <div>
                     <Button color="primary" type="submit">Registrar</Button>{' '}
-                    <Button color="secondary" onClick={handleClose}>Cancelar</Button>
+                    <Button color="secondary" onClick={handleCloseDebito}>Cancelar</Button>
                 </div>
             </Form>
         </>

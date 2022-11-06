@@ -13,13 +13,13 @@ export default function ListaCadastro() {
 
     const [modal, setModal] = useState(false);
 
-    const handleClose = () => {
+    const handleCloseDebito = () => {
         setModal(false);
         setExtrato(false);
         setExtrato(true);
     };
 
-    const handleShow = () => setModal(true);
+    const handleShowDebito = () => setModal(true);
 
     const handleSelect = (id) => {
         setIdCadastro(id);
@@ -52,14 +52,14 @@ export default function ListaCadastro() {
                         </Input>
                 </FormGroup>
                 <FormGroup>
-                        {extrato && idCadastro ? <Extrato idCadastro={idCadastro} handleShow={handleShow}/> : ''}
+                        {extrato && idCadastro ? <Extrato idCadastro={idCadastro} handleShowDebito={handleShowDebito}/> : ''}
                 </FormGroup>
             </Form>
             <Modal isOpen={modal}>
-                <ModalHeader closeButton>
+                <ModalHeader>
                     Débito
                 </ModalHeader>
-                <ModalBody><Debito idCadastro={idCadastro} handleClose={handleClose} /></ModalBody>
+                <ModalBody><Debito idCadastro={idCadastro} handleCloseDebito={handleCloseDebito} /></ModalBody>
             </Modal>
         </>
     )
