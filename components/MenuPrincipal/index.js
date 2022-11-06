@@ -9,7 +9,7 @@ export default function MenuPrincipal() {
             <div className="text-center pt-2 mobile-class header-class">
                 <h3>SGCS</h3>
             </div>
-            <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+            {/* <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
                 <Container>
                     <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -33,7 +33,7 @@ export default function MenuPrincipal() {
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
-            </Navbar>
+            </Navbar> */}
         </>
     )
 }

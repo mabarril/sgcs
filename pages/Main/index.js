@@ -1,18 +1,19 @@
 import React from "react";
-import { Fragment } from "react";
-import { Row } from "react-bootstrap";
+import { Container, Row } from "reactstrap";
 import ListaCadastro from "../../components/ListaCadastro";
 import MenuPrincipal from "../../components/MenuPrincipal";
 
 export default function Main() {
     return (
-        <Fragment>
-            <Row>
-                <MenuPrincipal />   
-            </Row>
-            <Row>
-                <ListaCadastro setIdCadastro></ListaCadastro>
-            </Row>
-        </Fragment>
+        <>
+            <Container>
+                <Row>
+                    <MenuPrincipal />
+                </Row>
+                <Row>
+                    <ListaCadastro setIdCadastro></ListaCadastro>
+                </Row>
+            </Container>
+        </>
     )
 }

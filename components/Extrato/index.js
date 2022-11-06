@@ -1,9 +1,9 @@
-import { React, useState, useEffect, Fragment, Row, Button } from "react";
-import { Table } from 'react-bootstrap';
+import { React, useState, useEffect, Fragment } from "react";
+import { Table, Input, Alert, Button } from 'reactstrap';
 import axios from "axios";
 import Debito from "../Debito";
 
-export default function Extrato({ idCadastro }) {
+export default function Extrato({ idCadastro, handleShow }) {
 
     const [debitos, setDebitos] = useState([]);
 
@@ -12,7 +12,6 @@ export default function Extrato({ idCadastro }) {
         await axios.get('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/' + idCadastro)
             .then((response) => setDebitos(response.data))
             .catch((error) => console.error(error));
-        console.log('debitos ', debitos);
     };
 
     const formataData = (param) => {
@@ -30,10 +29,11 @@ export default function Extrato({ idCadastro }) {
     }, [idCadastro]);
 
     return (
-        debitos.length > 0 ? (<Fragment>
+        debitos.length > 0 ? (<>
             <Table striped bordered hover>
                 <thead>
                     <tr>
+                        <th>Tipo</th>
                         <th>Descrição</th>
                         <th>Valor</th>
                         <th>Vencimento</th>
@@ -44,19 +44,21 @@ export default function Extrato({ idCadastro }) {
                     {debitos.map(debito => {
                         return (
                             <tr key={debito.iddebito}>
-                                <td>
-                                    {debito.descdebito}
-                                </td>
+                                <td>{debito.desctipo}</td>
+                                <td>{debito.descdebito}</td>
                                 <td>{formataMoeda(debito.valordebito)}</td>
                                 <td>{formataData(debito.vctodebito)}</td>
-                                <td>{debito.idpgto ? 'Pago' : <input type={"checkbox"} />}</td>
+                                <td>{debito.idpgto ? 'Pago' : <Input type="checkbox" />}</td>
                             </tr>
                         );
                     })}
                 </tbody>
             </Table>
-        </Fragment>
-        ) : <span>Não foram encontrados debitos para o desbravador</span>
+            <div>
+                <Button color="primary" onClick={handleShow}>Débito</Button>
+            </div>
+        </>
+        ) : <Alert color="warning">Não foram encontrados debitos para o desbravador</Alert>
 
     );
 }
