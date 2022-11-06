@@ -1,5 +1,6 @@
 import { React, useState, useEffect, Fragment } from "react";
 import { Table, Input, Alert, Button } from 'reactstrap';
+import {PlusCircleIcon} from '@primer/octicons-react'
 import axios from "axios";
 import Debito from "../Debito";
 
@@ -55,10 +56,15 @@ export default function Extrato({ idCadastro, handleShow }) {
                 </tbody>
             </Table>
             <div>
-                <Button color="primary" onClick={handleShow}>Débito</Button>
+                <Button color="primary" onClick={handleShow}><PlusCircleIcon size={24} /> Débito</Button>
             </div>
         </>
-        ) : <Alert color="warning">Não foram encontrados debitos para o desbravador</Alert>
+        ) : (<>
+            <Alert color="warning">Não foram encontrados debitos para o desbravador</Alert>
+            <div>
+                <Button color="primary" onClick={handleShow}><PlusCircleIcon size={24} /> Débito</Button>
+            </div>
+        </>)
 
     );
 }
