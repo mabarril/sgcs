@@ -1,9 +1,7 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
 import Main from '../pages/Main';
-import MenuPrincipal from '../components/MenuPrincipal';
-import { Container } from 'react-bootstrap'
-import { Fragment } from 'react/cjs/react.production.min';
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 console.log("Home ...")
 

@@ -1,13 +1,11 @@
 import { React, useState, useEffect } from "react";
-import { Table, Input, Alert, Button } from 'reactstrap';
-import { PlusCircleIcon } from '@primer/octicons-react'
+import { Table, Alert, Button } from 'reactstrap';
 import axios from "axios";
 
 
-export default function Extrato({ idCadastro, handleShowDebito }) {
+export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
 
     const [debitos, setDebitos] = useState([]);
-    const [idDebitos, setIdDebitos] = useState([]);
     const [arrayDebitos, setArrayDebitos] = useState([]);
 
     const getDebito = async (idCadastro) => {
@@ -27,21 +25,14 @@ export default function Extrato({ idCadastro, handleShowDebito }) {
     }
 
     const handleSelectDebito = (debito) => {
-        
-        if (arrayDebitos.length === 0) {
-            arrayDebitos.push(debito);
-            console.log(arrayDebitos);
-        } else {
-            if (arrayDebitos.filter(item => item.iddebito == debito.iddebito ).length > 0) {
-                console.log("&&&&&&");
-            }
-
+        debito = {...debito, "nome" : dbv.nome};
+        if (arrayDebitos.filter(item => item.iddebito === debito.iddebito).length === 0) {
+            setArrayDebitos(debitos => [...debitos, debito])
         }
     };
 
     useEffect(() => {
         getDebito(idCadastro);
-        setArrayDebitos([]);
     }, [idCadastro]);
 
     return (
@@ -66,8 +57,8 @@ export default function Extrato({ idCadastro, handleShowDebito }) {
                                     <td>{formataMoeda(debito.valordebito)}</td>
                                     <td>{formataData(debito.vctodebito)}</td>
                                     <td>{debito.idpgto ? 'Pago' :
-                                        <Input type="checkbox"
-                                            onChange={(e) => { handleSelectDebito(debito) }} />}
+                                        <Button
+                                            onClick={(e) => { handleSelectDebito(debito) }} ><i className="bi bi-cash-coin"></i></Button>}
                                     </td>
                                 </tr>
                             );
@@ -79,9 +70,40 @@ export default function Extrato({ idCadastro, handleShowDebito }) {
                 <Alert color="warning">Não foram encontrados debitos para o desbravador</Alert>
             </>)}
             < div >
-                <Button color="primary" onClick={handleShowDebito}><PlusCircleIcon size={24} /> Débito</Button>{" "}
-                {/* <Button color="success" onClick={handleShow}><PlusCircleIcon size={24} /> Pagamento</Button> */}
+                <Button color="primary" onClick={handleShowDebito}> <i class="bi bi-plus-circle"></i> Débito</Button>{" "}
             </div >
+            {arrayDebitos.length > 0 ? (
+                < Table hover>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Tipo</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Vencimento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            arrayDebitos.map(debito => {
+                                return (
+
+                                    <tr key={debito.iddebito}>
+                                        <td>{debito.nome}</td>
+                                        <td>{debito.desctipo}</td>
+                                        <td>{debito.descdebito}</td>
+                                        <td>{formataMoeda(debito.valordebito)}</td>
+                                        <td>{formataData(debito.vctodebito)}</td>
+                                        {/* <td>{debito.idpgto ? 'Pago' :
+                                <Button
+                                    onClick={(e) => { handleSelectDebito(debito) }} ><i class="bi bi-cash-coin"></i></Button>}
+                            </td> */}
+                                    </tr>
+                                )
+                            })}
+                    </tbody>
+                </Table>)
+                : <p>{arrayDebitos.length}</p>}
         </>
     );
 

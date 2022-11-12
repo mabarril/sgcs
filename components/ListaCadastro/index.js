@@ -9,6 +9,7 @@ export default function ListaCadastro() {
 
     const [user, setUser] = useState([]);
     const [idCadastro, setIdCadastro] = useState(0);
+    const [dbv, setDbv] = useState();
     const [extrato, setExtrato] = useState(false);
 
     const [modal, setModal] = useState(false);
@@ -23,6 +24,7 @@ export default function ListaCadastro() {
 
     const handleSelect = (id) => {
         setIdCadastro(id);
+        setDbv(user.find(item => item.id === id));
         setExtrato(true);
     }
 
@@ -52,7 +54,7 @@ export default function ListaCadastro() {
                         </Input>
                 </FormGroup>
                 <FormGroup>
-                        {extrato && idCadastro ? <Extrato idCadastro={idCadastro} handleShowDebito={handleShowDebito}/> : ''}
+                        {extrato && idCadastro ? <Extrato idCadastro={idCadastro} dbv={dbv} handleShowDebito={handleShowDebito}/> : ''}
                 </FormGroup>
             </Form>
             <Modal isOpen={modal}>
