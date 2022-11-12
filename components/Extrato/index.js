@@ -70,7 +70,7 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
                 <Alert color="warning">Não foram encontrados debitos para o desbravador</Alert>
             </>)}
             < div >
-                <Button color="primary" onClick={handleShowDebito}> <i class="bi bi-plus-circle"></i> Débito</Button>{" "}
+                <Button color="primary" onClick={handleShowDebito}> <i className="bi bi-plus-circle"></i> Débito</Button>{" "}
             </div >
             {arrayDebitos.length > 0 ? (
                 < Table hover>
