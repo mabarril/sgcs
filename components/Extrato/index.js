@@ -10,10 +10,10 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
     const [valorPagamento, setValorPagamento] = useState(0);
 
     const [values, setValues] = useState({
-        respcredito: '',
-        dtcredito: '',
-        valorcredito: 0,
-        tipocredito: 0
+        respPagamento: '',
+        dtPagamento: '',
+        valorPagamento: 0,
+        tipoPagamento: 3
     });
 
     const getDebito = async (idCadastro) => {
@@ -22,13 +22,20 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
             .catch((error) => console.error(error));
     };
 
-    const postCredito = () => {
-        setValues({...values,
-            valorcredito : valorPagamento });
-        console.log(values);
-        axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/creditos/', values
-        );
-    }
+    const postPagamento = async () => {
+        setValues({
+            ...values,
+            valorPagamento: valorPagamento,
+            debitos: arrayDebitos
+        });
+        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/pagamento/', values)
+            .then((response) => {
+                console.log(response);
+                handlePagamento(response.data.ID, arrayDebitos);
+            })
+            .catch((error) => console.error(error));
+    };
+
 
     const formataData = (param) => {
         var data = new Date(param)
@@ -53,9 +60,7 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
         setArrayDebitos(arrayRemovido)
     }
 
-    const handleSubmit = (e) => {
-
-        console.log('oiiiiii');
+    const handleCredito = (e) => {
         e.preventDefault();
         postCredito();
     };
@@ -121,7 +126,7 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
                 arrayDebitos.length > 0 ? (
                     <div className="container text-center" >
                         <div className="row justify-content-lg-center" >
-                            <div className="col-8 p-3 " style={{backgroundColor : '#F5F5F5', }}>
+                            <div className="col-8 p-3 " style={{ backgroundColor: '#F5F5F5', }}>
                                 <h3 className="pt-3 pb-3"><strong>Registro de Pagamento</strong></h3>
                                 <Table hover>
                                     <thead>
@@ -146,10 +151,6 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
                                                         <td>
                                                             <Button color="danger" onClick={(e) => { handleRemoveItemPagamento(debito) }}><i className="bi bi-trash" /></Button>
                                                         </td>
-                                                        {/* <td>{debito.idpgto ? 'Pago' :
-                                <Button
-                                    onClick={(e) => { handleSelectDebito(debito) }} ><i class="bi bi-cash-coin"></i></Button>}
-                            </td> */}
                                                     </tr>
                                                 )
                                             })}
@@ -158,7 +159,7 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
                                         <p>{formataMoeda(valorPagamento)}</p>
                                     </tfoot>
                                 </Table>
-                                <Form onSubmit={handleSubmit}> 
+                                <Form>
                                     <Row>
                                         <FormGroup>
                                             <Label for="respcredito">Responsável</Label>
@@ -166,10 +167,10 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
                                                 id="respcredito"
                                                 name="respcredito"
                                                 type="text"
-                                                value={values.respcredito}
+                                                value={values.respCredito}
                                                 onChange={(e) => setValues((values) => ({
                                                     ...values,
-                                                    respcredito: e.target.value,
+                                                    respCredito: e.target.value,
                                                 }))}
                                             />
                                             {/* {submitted && !values.vctoDebito && <span id="vcto-error">Vencimento obrigatório</span>} */}
@@ -178,31 +179,30 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
                                     <Row>
                                         <Col>
                                             <FormGroup>
-                                                <Label for="dtcredito">Data do Pagamento</Label>
+                                                <Label for="dtPagamento">Data do Pagamento</Label>
                                                 <Input
-                                                    id="dtcredito"
-                                                    name="dtcredito"
+                                                    id="dtPagamento"
+                                                    name="dtPagamento"
                                                     type="date"
-                                                    value={values.dtcredito}
+                                                    value={values.dtPagamento}
                                                     onChange={(e) => setValues((values) => ({
                                                         ...values,
-                                                        dtcredito: e.target.value,
+                                                        dtPagamento: e.target.value,
                                                     }))}
                                                 />
-                                                {/* {submitted && !values.vctoDebito && <span id="vcto-error">Vencimento obrigatório</span>} */}
                                             </FormGroup>
                                         </Col>
                                         <Col>
                                             <FormGroup>
-                                                <Label for="tipocredito">Tipo</Label>
+                                                <Label for="tipoPagamento">Tipo</Label>
                                                 <Input
-                                                    id="tipocredito"
-                                                    name="tipocredito"
+                                                    id="tipoPagamento"
+                                                    name="tipoPagamento"
                                                     type="select"
-                                                    value={values.tipocredito}
+                                                    value={values.tipoPagamento}
                                                     onChange={(e) => setValues((values) => ({
                                                         ...values,
-                                                        tipocredito: e.target.value,
+                                                        tipoPagamento: e.target.value,
                                                     }))}>
                                                     <option key={3} value={3}>CRÉDITO</option>
                                                     <option key={4} value={4}>DÉBITO</option>
@@ -210,14 +210,11 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
                                                     <option key={6} value={6}>TRANSFERÊNCIA</option>
                                                     <option key={7} value={7}>DINHEIRO</option>
                                                 </Input>
-                                                {/* {submitted && !values.vctoDebito && <span id="vcto-error">Vencimento obrigatório</span>} */}
                                             </FormGroup>
                                         </Col>
                                     </Row>
-                                    <Button color="primary" type="submit">Registrar</Button>{' '}
-                                    <Button color="primary" type="submit" style={{ float: 'right' }} > <i className="bi bi-wallet2"/> Salvar</Button>
+                                    <Button color="primary" type="submit" style={{ float: 'right' }} onClick={(e) => handlePagamento(e)}> <i className="bi bi-wallet2" /> Registrar Pagamento</Button>
                                 </Form>
-
                             </div>
                         </div>
                     </div>
