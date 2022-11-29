@@ -1,38 +1,46 @@
+import {React, useState} from 'react';
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Container, Jumbotron } from 'reactstrap';
+import Extrato from '../Extrato';
 
 export default function MenuPrincipal() {
+
+    const [isOpen, setIsOpen] = useState(false);
+    const [isExtrato, setIsExtrato] = useState(false);
+
+    const handleExtrato = () => {
+        setIsOpen(false);
+        setIsExtrato(true);
+    }
+
+    const handleMain = () => {
+        setIsOpen(false);
+        setIsExtrato(false);
+    }
+
     return (
         <>
-            <div className="text-center pt-2 web-class header-class">
-                <h3>Sistema de Gerenciamento Cruzeiro do Sul</h3>
-            </div>
-            <div className="text-center pt-2 mobile-class header-class">
-                <h3>SGCS</h3>
-            </div>
-            {/* <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-                <Container>
-                    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                    <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav className="me-auto">
-                            <Nav.Link href="#features">Features</Nav.Link>
-                            <Nav.Link href="#pricing">Pricing</Nav.Link>
-                            <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-                            </NavDropdown>
+            <div style={{ display: 'block' }}>
+                <Navbar color="dark" dark expand="md">
+                    <NavbarBrand href="/" onClick={() => handleMain()}><strong>Cruzeiro do Sul</strong></NavbarBrand>
+                    <NavbarToggler onClick={() => setIsOpen(!isOpen)} />
+                    <Collapse isOpen={isOpen} navbar>
+                        <Nav className="ml-auto" navbar>
+                            <NavItem>
+                                <NavLink href="#" onClick={() => handleExtrato()}>Extrato</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="#">Pagamento</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="#">Débito</NavLink>
+                            </NavItem>
                         </Nav>
-                        <Nav>
-                            <Nav.Link href="#deets">More deets</Nav.Link>
-                            <Nav.Link eventKey={2} href="#memes">
-                                Dank memes
-                            </Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar> */}
+                    </Collapse>
+                </Navbar>
+            </div>
+            <div>
+                {isExtrato ? <Extrato /> : null}
+            </div>
         </>
     )
 }

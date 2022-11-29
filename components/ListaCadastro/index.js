@@ -1,31 +1,30 @@
 
-import { Fragment, React, useEffect, useState } from "react";
+import { React, useEffect, useState } from "react";
 import axios from "axios";
 import { Form, Button, FormGroup, Input, Row, Modal, ModalHeader, ModalBody } from "reactstrap";
 import Extrato from "../Extrato";
 import Debito from "../Debito"
 
-export default function ListaCadastro() {
+export default function ListaCadastro({ setDesbravador, setModal }) {
 
     const [user, setUser] = useState([]);
-    const [idCadastro, setIdCadastro] = useState(0);
     const [dbv, setDbv] = useState();
-    const [extrato, setExtrato] = useState(false);
+  
 
-    const [modal, setModal] = useState(false);
+    // const [modal, setModal] = useState(false);
 
-    const handleCloseDebito = () => {
-        setModal(false);
-        setExtrato(false);
-        setExtrato(true);
-    };
+    // const handleCloseDebito = () => {
+    //     setModal(false);
+    //     setExtrato(false);
+    //     setExtrato(true);
+    // };
 
-    const handleShowDebito = () => setModal(true);
+    // const handleShowDebito = () => setModal(true);
 
     const handleSelect = (id) => {
-        setIdCadastro(id);
-        setDbv(user.find(item => item.id === id));
-        setExtrato(true);
+        console.log(id);
+        setDesbravador(user.find(item => item.id === id));
+        setModal(false);
     }
 
     useEffect(() => {
@@ -40,29 +39,27 @@ export default function ListaCadastro() {
     return (
         <>
             <Form>
-                <Row>
-                    <h3 className="pt-3 pb-3">Desbravadores</h3>
-                </Row>
                 <FormGroup>
-                        <Input type="select" onChange={e => handleSelect(e.target.value)}>
-                            <option value="">Selecione</option>
-                            {
-                                user.map(
-                                    row => <option key={row.id} value={row.id}>{row.nome}</option>
-                                )
-                            }
-                        </Input>
+                    <Input type="select" onChange={e => handleSelect(e.target.value)}>
+                        <option value="">Selecione</option>
+                        {
+                            user.map(
+                                row => <option key={row.id} value={row.id}>{row.id} - {row.nome}</option>
+                            )
+                        }
+                    </Input>
                 </FormGroup>
-                <FormGroup>
+                {/* <FormGroup>
                         {extrato && idCadastro ? <Extrato idCadastro={idCadastro} dbv={dbv} handleShowDebito={handleShowDebito}/> : ''}
-                </FormGroup>
+                </FormGroup> */}
             </Form>
-            <Modal isOpen={modal}>
+
+            {/* <Modal isOpen={modal}>
                 <ModalHeader>
                     Débito
                 </ModalHeader>
                 <ModalBody><Debito idCadastro={idCadastro} handleCloseDebito={handleCloseDebito} /></ModalBody>
-            </Modal>
+            </Modal> */}
         </>
     )
 }
