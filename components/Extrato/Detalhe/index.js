@@ -44,7 +44,7 @@ export default function Detalhe({ desbravador }) {
                 (<>
                     {debitos.map(debito => {
                         return (
-                            <Accordion open={open} toggle={toggle}>
+                            <Accordion open={open} toggle={toggle} key={debito.iddebito}>
                                 <AccordionItem>
                                     <AccordionHeader targetId={debito.iddebito}>
                                         <Row >
