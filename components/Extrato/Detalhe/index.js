@@ -47,17 +47,13 @@ export default function Detalhe({ desbravador }) {
                             <Accordion open={open} toggle={toggle} key={debito.iddebito}>
                                 <AccordionItem>
                                     <AccordionHeader targetId={debito.iddebito}>
-                                        <Row >
-                                            <Col>
-                                                {debito.desctipo}
-                                            </Col>
-                                            <Col>
-                                                {formataData(debito.vctodebito)}
-                                            </Col>
-                                            <Col>
-                                                {formataMoeda(debito.valordebito)}
-                                            </Col>
-                                        </Row>
+                                        <div>
+                                            <Row >
+                                                <Col sm="6"> {debito.desctipo} </Col>
+                                                <Col sm="3"> {formataData(debito.vctodebito)} </Col>
+                                                <Col sm="3"> {formataMoeda(debito.valordebito)} </Col>
+                                            </Row>
+                                        </div>
                                     </AccordionHeader>
                                     <AccordionBody accordionId={debito.iddebito}>
                                         <Row style={{ paddingLeft: "3em" }}>
