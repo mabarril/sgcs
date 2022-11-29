@@ -1,11 +1,11 @@
 import { React, useState, useEffect } from "react";
-import { Table, Alert, Button, Form, Input, Row, FormGroup, Label, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Table, Button, Form, Input, Row, FormGroup, Label, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import axios from "axios";
 import ListaCadastro from "../ListaCadastro";
+import Detalhe from "./Detalhe";
 
 export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
 
-    const [debitos, setDebitos] = useState([]);
     const [arrayDebitos, setArrayDebitos] = useState([]);
     const [valorPagamento, setValorPagamento] = useState(0);
     const [modal, setModal] = useState(false);
@@ -17,12 +17,6 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
         valorPagamento: 0,
         tipoPagamento: 3
     });
-
-    const getDebito = async (idCadastro) => {
-        await axios.get('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/' + idCadastro)
-            .then((response) => setDebitos(response.data))
-            .catch((error) => console.error(error));
-    };
 
     const postPagamento = async (e) => {
         e.preventDefault();
@@ -39,33 +33,18 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
             .catch((error) => console.error(error));
     };
 
+    // const handleSelectDebito = (debito) => {
+    //     debito = { ...debito, "nome": dbv.nome };
+    //     if (arrayDebitos.filter(item => item.iddebito === debito.iddebito).length === 0) {
+    //         setArrayDebitos(debitos => [...debitos, debito])
+    //     }
+    // };
 
-    const formataData = (param) => {
-        var data = new Date(param)
-        return data.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
-    }
-
-    const formataMoeda = (valor) => {
-        valor = parseFloat(valor);
-        return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-
-    const handleSelectDebito = (debito) => {
-        debito = { ...debito, "nome": dbv.nome };
-        if (arrayDebitos.filter(item => item.iddebito === debito.iddebito).length === 0) {
-            setArrayDebitos(debitos => [...debitos, debito])
-        }
-    };
-
-    const handleRemoveItemPagamento = (debito) => {
-        let arrayRemovido = (arrayDebitos.filter(item => item.iddebito != debito.iddebito))
-        console.log(arrayRemovido);
-        setArrayDebitos(arrayRemovido)
-    }
-
-    useEffect(() => {
-        getDebito(desbravador.id);
-    }, [desbravador]);
+    // const handleRemoveItemPagamento = (debito) => {
+    //     let arrayRemovido = (arrayDebitos.filter(item => item.iddebito != debito.iddebito))
+    //     console.log(arrayRemovido);
+    //     setArrayDebitos(arrayRemovido)
+    // }
 
     useEffect(() => {
         let valor = 0;
@@ -82,6 +61,7 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
             <Row className="pt-5 pb-3">
                 {
                     desbravador.id != null ? (
+                        <>
                         <Row>
                             <Col>
                                 <h3><strong>{desbravador.nome}</strong></h3>
@@ -90,50 +70,18 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
                                 <Button color="primary" onClick={handleShowDebito} style={{ float: 'right' }} > <i className="bi bi-plus-circle"></i> Débito</Button>
                             </Col>
                         </Row>
-
+                        <Detalhe desbravador={desbravador}></Detalhe>
+                    </>
                     ) : null
                 }
             </Row>
 
-            {debitos.length > 0 ? (<>
-                <Row>
-                    <Table striped bordered hover responsive size="sm">
-                        <thead>
-                            <tr>
-                                <th>Tipo</th>
-                                <th>Descrição</th>
-                                <th>Valor</th>
-                                <th>Vencimento</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {debitos.map(debito => {
-                                return (
-                                    <tr key={debito.iddebito}>
-                                        <td>{debito.desctipo}</td>
-                                        <td>{debito.descdebito}</td>
-                                        <td>{formataMoeda(debito.valordebito)}</td>
-                                        <td>{formataData(debito.vctodebito)}</td>
-                                        {/* <td>{debito.idpgto ? 'Pago' :
-                                            <Button color="success"
-                                                onClick={(e) => { handleSelectDebito(debito) }} ><i className="bi bi-cash-coin"></i></Button>}
-                                        </td> */}
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </Table>
-                </Row>
-            </>
-            ) : (<>
-                <Row>
-                    <Alert color="warning">Não foram encontrados debitos para o desbravador</Alert>
-                </Row>
-            </>)}
+
 
             <Row>
+                
                 <div>
-                    <Button color="primary" style={{ float: 'right' }} onClick={() => setModal(true)}> <i className="bi bi-search"></i>  Desbravador </Button>
+                    <Button color="primary" style={{ float: 'right' }} onClick={() => setModal(true)}> <i className="bi bi-search"></i>  Desbravador </Button> {"  "}
                 </div>
             </Row>
             <Row>
@@ -247,7 +195,7 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
                 <ModalBody>
                     <ListaCadastro setDesbravador={setDesbravador} setModal={setModal} />
                 </ModalBody>
-                <ModalFooter><Button color="danger" onClick={()=>{setModal(false)}}>Cancelar</Button></ModalFooter>
+                <ModalFooter><Button color="danger" onClick={() => { setModal(false) }}>Cancelar</Button></ModalFooter>
                 {/* <ModalBody><Debito idCadastro={idCadastro} handleCloseDebito={handleCloseDebito} /></ModalBody> */}
             </Modal>
         </>
