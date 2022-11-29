@@ -133,7 +133,7 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
 
             <Row>
                 <div>
-                    <Button color="primary" style={{ float: 'right' }} onClick={() => setModal(true)}> <i class="bi bi-search"></i>  Desbravador </Button>
+                    <Button color="primary" style={{ float: 'right' }} onClick={() => setModal(true)}> <i className="bi bi-search"></i>  Desbravador </Button>
                 </div>
             </Row>
             <Row>
