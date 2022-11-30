@@ -15,6 +15,33 @@ a {
   box-sizing: border-box;
 }
 
+.circle {
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+  display: flex;
+  background-color: lightgray;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-justify: auto;
+}
+
+.circulo > h2 {
+	font-family: sans-serif;
+	color: white;
+	font-size: 1.4rem;
+	font-weight: bold;
+}
+
+.valor {
+  float: right;
+  text-align: right;
+}
+
+.descricao {
+  text-transform: uppercase;
+}
 
 .header-class {
   height: 50px;

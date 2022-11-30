@@ -1,6 +1,6 @@
 
 import { React, useState, useEffect } from "react";
-import { Alert, Row, Col, Accordion, AccordionItem, AccordionHeader, AccordionBody, Button } from 'reactstrap';
+import { Alert, Row, Card, CardBody, CardTitle, CardSubtitle, CardText, Col, Accordion, AccordionItem, AccordionHeader, AccordionBody, Button, ListGroup, ListGroupItem, Container } from 'reactstrap';
 import axios from "axios";
 
 export default function Detalhe({ desbravador }) {
@@ -33,6 +33,10 @@ export default function Detalhe({ desbravador }) {
         return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
+    const formataTipo = (tipo) => {
+        return tipo.substr(0, 1);
+    }
+
     useEffect(() => {
         getDebito(desbravador.id);
     }, [desbravador]);
@@ -41,10 +45,40 @@ export default function Detalhe({ desbravador }) {
     return (
         <Row className="pt-5 pb-3">
             {debitos.length > 0 ?
-                (<>
+                (<ListGroup flush>
                     {debitos.map(debito => {
                         return (
-                            <Accordion open={open} toggle={toggle} key={debito.iddebito}>
+                            <ListGroupItem>
+                                <Row>
+                                    <Col style={{ float: "left" }}>
+                                        <div className="circle" >
+                                            <h2>{formataTipo(debito.desctipo)}</h2>
+                                        </div>
+                                    </Col>
+                                    <Col>
+                                        <Row>
+                                            {formataData(debito.vctodebito)}
+                                        </Row>
+                                        <Row className="descricao">
+                                            {debito.descdebito}
+                                        </Row>
+                                    </Col>
+                                    <Col className="valor">
+                                        {formataMoeda(debito.valordebito)}
+                                    </Col>
+                                </Row>
+                            </ListGroupItem>
+
+                            /*<Card>
+                               <CardBody>
+                                    
+                                    <CardTitle>Card title</CardTitle>
+                                    <CardSubtitle>Card subtitle</CardSubtitle>
+                                    <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
+                                    <Button>Button</Button>
+                                </CardBody>
+                            </Card>
+                             <Accordion open={open} toggle={toggle} key={debito.iddebito}>
                                 <AccordionItem>
                                     <AccordionHeader targetId={debito.iddebito}>
                                         <div>
@@ -56,6 +90,8 @@ export default function Detalhe({ desbravador }) {
                                         </div>
                                     </AccordionHeader>
                                     <AccordionBody accordionId={debito.iddebito}>
+                                   
+                                   
                                         <Row style={{ paddingLeft: "3em" }}>
                                             <Col>{debito.descdebito}</Col>
                                             <Col>
@@ -69,10 +105,10 @@ export default function Detalhe({ desbravador }) {
 
                                     </AccordionBody>
                                 </AccordionItem>
-                            </Accordion>
+                            </Accordion> */
                         )
                     })}
-                </>
+                </ListGroup>
                 ) : (
                     <Row>
                         <Alert color="warning">Não foram encontrados debitos para o desbravador</Alert>
