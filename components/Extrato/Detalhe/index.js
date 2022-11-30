@@ -48,7 +48,7 @@ export default function Detalhe({ desbravador }) {
                 (<ListGroup flush>
                     {debitos.map(debito => {
                         return (
-                            <ListGroupItem>
+                            <ListGroupItem key={debito.iddebito}>
                                 <Row>
                                     <Col style={{ float: "left" }}>
                                         <div className="circle" >
