@@ -23,12 +23,16 @@ export default function ListaCadastro({ setDesbravador, setModal }) {
 
     const handleSelect = (id) => {
         console.log(id);
-        setDesbravador(user.find(item => item.id === id));
+        setDbv(user.find(item => item.id == id));
+        console.log(dbv);
+        setDesbravador(user.find(item => item.id == id));
+        
         setModal(false);
     }
 
     useEffect(() => {
-        axios.get('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/cadastros',
+        // axios.get('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/cadastros',
+        axios.get('http://localhost:8080/cadastro',
         )
             .then(async (response) => {
                 setUser(await response.data);

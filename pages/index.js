@@ -16,9 +16,7 @@ export default function Home() {
         <div className="text-center pt-2 mobile-class header-class">
           <h3>SGCS</h3>
         </div>
-        <Row>
-          <MenuPrincipal />
-        </Row>
+        <MenuPrincipal />
       </Container>
     </>
   )

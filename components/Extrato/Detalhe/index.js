@@ -1,27 +1,37 @@
 
 import { React, useState, useEffect } from "react";
-import { Alert, Row, Card, CardBody, CardTitle, CardSubtitle, CardText, Col, Accordion, AccordionItem, AccordionHeader, AccordionBody, Button, ListGroup, ListGroupItem, Container } from 'reactstrap';
+import { Alert, Row, Col, ListGroup, ListGroupItem } from 'reactstrap';
 import axios from "axios";
 
 export default function Detalhe({ desbravador }) {
 
 
     const [debitos, setDebitos] = useState([]);
-    const [open, setOpen] = useState();
+    const [circuloColorido, setCiruloColorido] = useState('');
+    const [exibeDebitos, setExibeDebitos] = useState(false);
 
     const getDebito = async (idCadastro) => {
-        await axios.get('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/' + idCadastro)
-            .then((response) => setDebitos(response.data))
+        const res = await axios.get('http://localhost:8080/debito/' + idCadastro)
+            .then((response) => response.data)
             .catch((error) => console.error(error));
+
+        carregaDebito(res);
     };
 
-    const toggle = (id) => {
-        if (open === id) {
-            setOpen();
-        } else {
-            setOpen(id);
-        }
+    const carregaDebito = (res) => {
+        const itensArray = [];
+        console.log(e)
+        res.forEach(element => {
+            itensArray.push(element);
+        });
+
+        const setDebitos = () => setDebitos(itensArray);
     }
+
+    //     if (debitos.length > 0) {
+    //         setExibeDebitos(true);
+    //     }
+    // }
 
     const formataData = (param) => {
         var data = new Date(param)
@@ -33,12 +43,38 @@ export default function Detalhe({ desbravador }) {
         return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
-    const formataTipo = (tipo) => {
-        return tipo.substr(0, 1);
+
+    const verificaCor = (tipo) => {
+
     }
+
+    const formataTipo = (tipo) => {
+        let desctipo = '';
+        switch (tipo) {
+            case 1:
+                desctipo = "MENSALIDADE";
+                setCiruloColorido("circle ");
+                break;
+            case 2:
+                desctipo = "UNIFORME";
+                console.log("UNIFORME")
+                break;
+            case 8:
+                desctipo = "CAMPORI";
+                console.log("CAMPORI");
+                break;
+            case 9:
+                desctipo = "EVENTOS";
+                console.log("EVENTOS");
+                break;
+        }
+        return desctipo.substr(0, 1);
+    }
+
 
     useEffect(() => {
         getDebito(desbravador.id);
+        console.log(debitos);
     }, [desbravador]);
 
 
@@ -51,8 +87,8 @@ export default function Detalhe({ desbravador }) {
                             <ListGroupItem key={debito.iddebito}>
                                 <Row>
                                     <Col style={{ float: "left" }}>
-                                        <div className="circle" >
-                                            <h2>{formataTipo(debito.desctipo)}</h2>
+                                        <div className={circuloColorido} >
+                                            <h2>{formataTipo(debito.idtipdebito)}</h2>
                                         </div>
                                     </Col>
                                     <Col>
@@ -110,9 +146,7 @@ export default function Detalhe({ desbravador }) {
                     })}
                 </ListGroup>
                 ) : (
-                    <Row>
-                        <Alert color="warning">Não foram encontrados debitos para o desbravador</Alert>
-                    </Row>
+                    <Alert color="warning">Não foram encontrados debitos para o desbravador</Alert>
                 )
             }
         </Row>)

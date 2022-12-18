@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import { React, useState } from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Container, Jumbotron } from 'reactstrap';
 import Extrato from '../Extrato';
 
@@ -19,28 +19,24 @@ export default function MenuPrincipal() {
 
     return (
         <>
-            <div style={{ display: 'block' }}>
-                <Navbar color="dark" dark expand="md">
-                    <NavbarBrand href="/" onClick={() => handleMain()}><strong>Cruzeiro do Sul</strong></NavbarBrand>
-                    <NavbarToggler onClick={() => setIsOpen(!isOpen)} />
-                    <Collapse isOpen={isOpen} navbar>
-                        <Nav className="ml-auto" navbar>
-                            <NavItem>
-                                <NavLink href="#" onClick={() => handleExtrato()}>Extrato</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href="#">Pagamento</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href="#">Débito</NavLink>
-                            </NavItem>
-                        </Nav>
-                    </Collapse>
-                </Navbar>
-            </div>
-            <div>
-                {isExtrato ? <Extrato /> : null}
-            </div>
+            <Navbar color="dark" dark expand="md">
+                <NavbarBrand href="/" onClick={() => handleMain()}><strong>Cruzeiro do Sul</strong></NavbarBrand>
+                <NavbarToggler onClick={() => setIsOpen(!isOpen)} />
+                <Collapse isOpen={isOpen} navbar>
+                    <Nav className="ml-auto" navbar>
+                        <NavItem>
+                            <NavLink href="#" onClick={() => handleExtrato()}>Extrato</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink href="#">Pagamento</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink href="#">Débito</NavLink>
+                        </NavItem>
+                    </Nav>
+                </Collapse>
+            </Navbar>
+            {isExtrato ? <Extrato true/> : null}
         </>
     )
 }

@@ -4,7 +4,7 @@ import axios from "axios";
 import ListaCadastro from "../ListaCadastro";
 import Detalhe from "./Detalhe";
 
-export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
+export default function Extrato({ handleShowDebito }) {
 
     const [arrayDebitos, setArrayDebitos] = useState([]);
     const [valorPagamento, setValorPagamento] = useState(0);
@@ -62,16 +62,16 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
                 {
                     desbravador.id != null ? (
                         <>
-                        <Row>
-                            <Col>
-                                <h3><strong>{desbravador.nome}</strong></h3>
-                            </Col>
-                            <Col>
-                                <Button color="primary" onClick={handleShowDebito} style={{ float: 'right' }} > <i className="bi bi-plus-circle"></i> Débito</Button>
-                            </Col>
-                        </Row>
-                        <Detalhe desbravador={desbravador}></Detalhe>
-                    </>
+                            <Row>
+                                <Col>
+                                    <h3><strong>{desbravador.nome}</strong></h3>
+                                </Col>
+                                <Col>
+                                    <Button color="primary" onClick={handleShowDebito} style={{ float: 'right' }} > <i className="bi bi-plus-circle"></i> Débito</Button>
+                                </Col>
+                            </Row>
+                            <Detalhe desbravador={desbravador}></Detalhe>
+                        </>
                     ) : null
                 }
             </Row>
@@ -82,11 +82,6 @@ export default function Extrato({ idCadastro, dbv, handleShowDebito }) {
                 
                 <div>
                     <Button color="primary" style={{ float: 'right' }} onClick={() => setModal(true)}> <i className="bi bi-search"></i>  Desbravador </Button> {"  "}
-                </div>
-            </Row>
-            <Row>
-                <div>
-
                 </div>
             </Row>
 
