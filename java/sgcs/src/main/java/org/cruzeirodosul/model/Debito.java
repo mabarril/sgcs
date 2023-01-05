@@ -1,7 +1,9 @@
 package org.cruzeirodosul.model;
 
+import java.math.BigInteger;
 import java.sql.Date;
 
+import javax.json.bind.annotation.JsonbDateFormat;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,11 +19,12 @@ public class Debito extends PanacheEntityBase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long iddebito;
-	private Long idcadastro;
+	private BigInteger idcadastro;
 	private Long idmatricula;
 	private String descdebito;
 	private float valordebito;
 	private int idtipdebito;
+	@JsonbDateFormat("yyyy-MM-dd")
 	private Date vctodebito;
 	private Long idpgto;
 
@@ -39,13 +42,13 @@ public class Debito extends PanacheEntityBase {
 
 
 
-	public Long getIdcadastro() {
+	public BigInteger getIdcadastro() {
 		return idcadastro;
 	}
 
 
 
-	public void setIdcadastro(Long idcadastro) {
+	public void setIdcadastro(BigInteger idcadastro) {
 		this.idcadastro = idcadastro;
 	}
 

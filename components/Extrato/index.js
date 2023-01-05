@@ -10,6 +10,7 @@ export default function Extrato({ handleShowDebito }) {
     const [valorPagamento, setValorPagamento] = useState(0);
     const [modal, setModal] = useState(false);
     const [desbravador, setDesbravador] = useState([]);
+    const [debitos, setDebitos] = useState([]);
 
     const [values, setValues] = useState({
         respPagamento: '',
@@ -55,6 +56,15 @@ export default function Extrato({ handleShowDebito }) {
         setValorPagamento(valor);
     }, [arrayDebitos]);
 
+    useEffect(() => {
+        const res = async () => { await axios.get('http://localhost:8080/debito/' + desbravador.id).data };
+        while (debitos.size == 0) {
+            if (res.size > 0) {
+               setDebitos(res);
+            }
+        };
+    }, [desbravador]);
+
     return (
         <>
 
@@ -79,7 +89,7 @@ export default function Extrato({ handleShowDebito }) {
 
 
             <Row>
-                
+
                 <div>
                     <Button color="primary" style={{ float: 'right' }} onClick={() => setModal(true)}> <i className="bi bi-search"></i>  Desbravador </Button> {"  "}
                 </div>

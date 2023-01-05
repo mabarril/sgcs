@@ -1,5 +1,6 @@
 package org.cruzeirodosul.resource;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -24,7 +25,7 @@ public class CadastroResource {
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Desbravador buscaDesbravador(@PathParam Long id) {
+	public Desbravador buscaDesbravador(@PathParam BigInteger id) {
 		return Desbravador.findById(id);
 
 	}
