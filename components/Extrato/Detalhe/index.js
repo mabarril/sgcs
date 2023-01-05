@@ -1,14 +1,17 @@
 
 import { React, useState, useEffect } from "react";
-import { Alert, Row, Col, ListGroup, ListGroupItem, Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap';
+import { Alert, Row, Col, Button, ListGroup, ListGroupItem } from 'reactstrap';
+import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap';
+import { FormGroup, Input, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import axios from "axios";
+import Debito from "../../Debito";
 
 export default function Detalhe({ desbravador }) {
 
 
     const [debitos, setDebitos] = useState([]);
-    const [circuloColorido, setCiruloColorido] = useState('');
     const [open, setOpen] = useState('');
+    const [modal, setModal] = useState(false);
     let resDebito = [];
 
     const toggle = (id) => {
@@ -26,6 +29,10 @@ export default function Detalhe({ desbravador }) {
         catch { (error) => console.error(error) };
     };
 
+    const handleDebito = () => {
+        setModal(!modal);
+    };
+
     const formataData = (param) => {
         var data = new Date(param)
         return data.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
@@ -37,56 +44,72 @@ export default function Detalhe({ desbravador }) {
     }
 
     const formataTipo = (tipo) => {
-        let desctipo = '';
+        let desctipo = [];
         switch (tipo) {
             case 1:
-                desctipo = "MENSALIDADE";
-                setCiruloColorido("circle ");
+                desctipo = { tipo: "MENSALIDADE", color: "circle mensalidade" };
                 break;
             case 2:
-                desctipo = "UNIFORME";
-                console.log("UNIFORME")
+                desctipo = { tipo: "UNIFORME", color: "circle uniforme" };
                 break;
             case 8:
-                desctipo = "CAMPORI";
-                console.log("CAMPORI");
+                desctipo = { tipo: "CAMPORI", color: "circle campori" };
                 break;
             case 9:
-                desctipo = "EVENTOS";
-                console.log("EVENTOS");
+                desctipo = { tipo: "EVENTOS", color: "circle evento" };
                 break;
         }
-        return desctipo.substr(0, 1);
+        return desctipo;
     }
     useEffect(() => {
         getDebito(desbravador.id);
-    }, [desbravador]);
+    }, [desbravador, modal]);
 
     return (
         <div className="p-3">
             <Accordion open={open} toggle={toggle}>
-
                 <AccordionItem>
-                    <AccordionHeader targetId="1">Débitos</AccordionHeader>
+                    <AccordionHeader targetId="1"><strong>Débitos</strong></AccordionHeader>
                     <AccordionBody accordionId="1">
-                        {debitos.length > 0 ? (
-                            <ListGroup>
-                                {debitos.map((item) => (
-                                    <ListGroupItem>
-                                        <Row>
-                                            <Col>{item.idtipdebito}</Col>
-                                            <Col>
-                                                {formataData(item.vctodebito)}
-                                            </Col>
-                                            <Col>
-                                                {formataMoeda(item.valordebito)}
-                                            </Col>
-                                        </Row>
-                                    </ListGroupItem>
-                                )
-                                )}
-                            </ListGroup>
-                        ) : <Alert color="warning">Não existe debito</Alert>}
+                        <Row>
+                            {debitos.length > 0 ? (
+                                <ListGroup>
+                                    {debitos.map((item) => (
+                                        <ListGroupItem className="groupItem">
+                                            <Row>
+                                                <Col md="2" xs="2" >
+                                                    <h2 className={formataTipo(item.idtipdebito).color} > {formataTipo(item.idtipdebito).tipo.substring(0, 1)}</h2>
+                                                </Col>
+                                                <Col md="8" xs="8">
+                                                    <Row>
+                                                        <Col>
+                                                            <p className="descricao">{item.descdebito}</p>
+                                                        </Col>
+                                                    </Row>
+                                                    <Row>
+                                                        <Col>
+                                                            <p>{formataData(item.vctodebito)}</p>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                                <Col md="2" xs="2">
+                                                    <h4 className="valor" style={{ float: 'right' }}>{formataMoeda(item.valordebito)}</h4>
+                                                    <FormGroup check style={{ float: 'right' }}>
+                                                        <Input type="checkbox" />
+                                                    </FormGroup>
+                                                </Col>
+                                            </Row>
+                                        </ListGroupItem>
+                                    )
+                                    )}
+                                </ListGroup>
+                            ) : <Alert color="warning">Não existe debito</Alert>}
+                        </Row>
+                        <Row className="p-3">
+                            <div>
+                                <Button color="primary" style={{ float: 'right' }} onClick={handleDebito}> <i className="bi bi-plus-circle"></i> Débito</Button>
+                            </div>
+                        </Row>
                     </AccordionBody>
                 </AccordionItem>
                 <AccordionItem>
@@ -94,6 +117,13 @@ export default function Detalhe({ desbravador }) {
                     <AccordionBody accordionId="2">Teste</AccordionBody>
                 </AccordionItem>
             </Accordion>
+
+            <Modal isOpen={modal}>
+                <ModalHeader>
+                    Débito
+                </ModalHeader>
+                <ModalBody><Debito idCadastro={desbravador.id} handleDebito={handleDebito} /></ModalBody>
+            </Modal>
 
         </div>
     )

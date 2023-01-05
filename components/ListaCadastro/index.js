@@ -27,7 +27,6 @@ export default function ListaCadastro({ setDesbravador, setModal }) {
         console.log(dbv);
         setDesbravador(user.find(item => item.id == id));
         
-        setModal(false);
     }
 
     useEffect(() => {

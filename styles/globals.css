@@ -1,4 +1,11 @@
 html,
+
+/* #337CA0
+#3EC300
+#FFFC31
+#FF1D15
+#E13700 */
+
 body {
   padding: 0;
   margin: 0;
@@ -16,21 +23,38 @@ a {
 }
 
 .circle {
-  width: 3em;
-  height: 3em;
+  color: white;
+  width: 2em;
+  height: 2em;
   border-radius: 50%;
+  box-shadow: 2px 2px 4px #585858;
   display: flex;
-  background-color: lightgray;
   justify-content: center;
   align-items: center;
   text-align: center;
   text-justify: auto;
+  text-shadow: 2px 2px 4px #585858;
+}
+.mensalidade {
+  background-color: #FF1D15;
 }
 
-.circulo > h2 {
+.uniforme {
+  background-color: #3EC300;
+}
+
+.campori {
+  background-color: #F0A202;
+}
+
+.evento {
+  background-color: #337CA0;
+}
+
+.circle > h2 {
 	font-family: sans-serif;
 	color: white;
-	font-size: 1.4rem;
+	font-size: 1.2rem;
 	font-weight: bold;
 }
 
@@ -55,6 +79,15 @@ a {
 
 .mobile-class {
   display: none;
+}
+
+.valor {
+  text-shadow: 2px 2px 4px #bbb9b9;
+}
+
+.groupItem {
+  border-radius: 1em;
+  box-shadow: 2px 2px 4px #cccbcb;
 }
 
 @media (max-width: 767.98px) {

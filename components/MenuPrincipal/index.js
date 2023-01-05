@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Container, Jumbotron } from 'reactstrap';
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Container, Jumbotron, Row, Col } from 'reactstrap';
 import Extrato from '../Extrato';
+import Pagamento from '../Pagamento';
 
 export default function MenuPrincipal() {
 
@@ -36,7 +37,14 @@ export default function MenuPrincipal() {
                     </Nav>
                 </Collapse>
             </Navbar>
-            {isExtrato ? <Extrato true/> : null}
+            <Row md="2" sm="1">
+                <Col md="8" sm="12">
+                    {isExtrato ? <Extrato true /> : null}
+                </Col>
+                <Col md="4" sm="12">
+                    <Pagamento/>
+                </Col>
+            </Row>
         </>
     )
 }
