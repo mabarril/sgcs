@@ -1,29 +1,29 @@
 package org.cruzeirodosul.model;
 
-import java.math.BigInteger;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-
 @Entity
-@Table(name = "cadastros")
-public class Desbravador extends PanacheEntityBase {
+@Table(name = "desbravador")
+@NamedNativeQueries({
+		@NamedNativeQuery(name = "LISTAR_DESBRAVADOR", query = "select id, nome from desbravador", resultClass = Desbravador.class),
+		@NamedNativeQuery(name = "BUSCAR_DESBRAVADOR_ID", query = "SELECT ID, NOME FROM desbravador WHERE ID=:ID", resultClass = Desbravador.class) })
+public class Desbravador {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private BigInteger id;
+	private Integer id;
+	@Column(name = "nome")
 	private String nome;
 
-	public BigInteger getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(BigInteger id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

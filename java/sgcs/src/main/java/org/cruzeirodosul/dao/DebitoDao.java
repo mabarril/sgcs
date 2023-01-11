@@ -1,20 +1,33 @@
 package org.cruzeirodosul.dao;
 
-import java.math.BigInteger;
 import java.util.List;
 
-import javax.inject.Singleton;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import org.cruzeirodosul.model.Debito;
 
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
+@RequestScoped
+public class DebitoDao {
 
-@Singleton
-public class DebitoDao implements PanacheRepository<Debito> {
+	private String BUSCAR_DEBITO_DE_UM_DESBRAVADOR = "SELECT * FROM DEBITOS WHERE IDCADASTRO=:IDCADASTRO";
 
-	public List<Debito> findByIdCadastro(BigInteger idCadastro) {
+	@Inject
+	EntityManager em;
 
-		return find("idcadastro", idCadastro).list();
+	public List<Debito> buscarDebitoDeUmDesbravador(Long idCadastro) {
+
+		Query query = em.createQuery(BUSCAR_DEBITO_DE_UM_DESBRAVADOR, Debito.class);
+		query.setParameter("ID_CADASTRO", idCadastro);
+
+		try {
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
 
 	}
 

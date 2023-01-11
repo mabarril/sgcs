@@ -61,6 +61,11 @@ export default function Detalhe({ desbravador }) {
         }
         return desctipo;
     }
+
+    const handleDebitoSelecionado = (item) => {
+        console.log(item);
+    }
+
     useEffect(() => {
         getDebito(desbravador.id);
     }, [desbravador, modal]);
@@ -95,7 +100,7 @@ export default function Detalhe({ desbravador }) {
                                                 <Col md="2" xs="2">
                                                     <h4 className="valor" style={{ float: 'right' }}>{formataMoeda(item.valordebito)}</h4>
                                                     <FormGroup check style={{ float: 'right' }}>
-                                                        <Input type="checkbox" />
+                                                        <Input type="checkbox" onClick={handleDebitoSelecionado(item)} />
                                                     </FormGroup>
                                                 </Col>
                                             </Row>

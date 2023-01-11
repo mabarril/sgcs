@@ -1,6 +1,5 @@
 package org.cruzeirodosul.resource;
 
-import java.math.BigInteger;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -22,8 +21,8 @@ public class DebitoResource {
 	@GET
 	@Path("{idDesbravador}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Debito> buscarDebitoDesbravador(@PathParam BigInteger idDesbravador) {
-		return debitoDao.findByIdCadastro(idDesbravador);
+	public List<Debito> buscarDebitoDesbravador(@PathParam Long idDesbravador) {
+		return debitoDao.buscarDebitoDeUmDesbravador(idDesbravador);
 
 	}
 
