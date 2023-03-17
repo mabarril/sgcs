@@ -1,12 +1,11 @@
 import { React, useState, useEffect } from "react";
-import { Table, Button, Form, Input, Row, FormGroup, Label, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Row } from 'reactstrap';
 import axios from "axios";
 import ListaCadastro from "../ListaCadastro";
 import Detalhe from "./Detalhe";
 
 export default function Extrato({ handleShowDebito }) {
 
-    const [modal, setModal] = useState(false);
     const [desbravador, setDesbravador] = useState([]);
     const [debitos, setDebitos] = useState([]);
 

@@ -7,21 +7,22 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.cruzeirodosul.model.Debito;
+import org.cruzeirodosul.model.Desbravador;
 
 @RequestScoped
 public class DebitoDao {
 
-	private String BUSCAR_DEBITO_DE_UM_DESBRAVADOR = "SELECT * FROM DEBITOS WHERE IDCADASTRO=:IDCADASTRO";
-
 	@Inject
 	EntityManager em;
 
-	public List<Debito> buscarDebitoDeUmDesbravador(Long idCadastro) {
+	public List<Debito> buscarDebitoDeUmDesbravador(Integer idCadastro) {
+		
+		TypedQuery<Debito> query = em.createNamedQuery("BUSCAR_DEBITO_DE_UM_DESBRAVADOR", Debito.class);
 
-		Query query = em.createQuery(BUSCAR_DEBITO_DE_UM_DESBRAVADOR, Debito.class);
-		query.setParameter("ID_CADASTRO", idCadastro);
+		query.setParameter("IDCADASTRO", idCadastro);
 
 		try {
 			return query.getResultList();

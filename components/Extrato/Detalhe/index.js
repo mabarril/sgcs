@@ -1,8 +1,11 @@
 
 import { React, useState, useEffect } from "react";
-import { Alert, Row, Col, Button, ListGroup, ListGroupItem } from 'reactstrap';
-import { Accordion, AccordionBody, AccordionHeader, AccordionItem } from 'reactstrap';
-import { FormGroup, Input, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Button } from "reactstrap";
+import { ToggleButton } from 'primereact/togglebutton';
+import { Accordion, AccordionTab } from 'primereact/accordion';
+import { DataView } from 'primereact/dataview';
+import { Message } from 'primereact/message';
+import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import axios from "axios";
 import Debito from "../../Debito";
 
@@ -10,21 +13,16 @@ export default function Detalhe({ desbravador }) {
 
 
     const [debitos, setDebitos] = useState([]);
-    const [open, setOpen] = useState('');
     const [modal, setModal] = useState(false);
+    const [checked, setChecked] = useState(false);
+    const [debitosSelecionados, setDebitosSelecionados] = useState([]);
+
     let resDebito = [];
 
-    const toggle = (id) => {
-        if (open === id) {
-            setOpen();
-        } else {
-            setOpen(id)
-        }
-    };
 
     const getDebito = (idCadastro) => {
         try {
-            axios.get('http://localhost:8080/debito/' + idCadastro).then((response) => setDebitos(response.data));
+            axios.get('http://localhost/dbv-api/debito/' + idCadastro).then((response) => setDebitos(response.data));
         }
         catch { (error) => console.error(error) };
     };
@@ -58,69 +56,81 @@ export default function Detalhe({ desbravador }) {
             case 9:
                 desctipo = { tipo: "EVENTOS", color: "circle evento" };
                 break;
+            case 10:
+                desctipo = { tipo: "INSCRIÇÃO", color: "circle evento" };
+                break;
         }
         return desctipo;
     }
 
     const handleDebitoSelecionado = (item) => {
-        console.log(item);
+        let _debitosSelecionados = [...debitosSelecionados];
+
+        if (_debitosSelecionados.some((itemPagar) => item.id === itemPagar.id)) 
+            _debitosSelecionados = _debitosSelecionados.filter(itemPagar => itemPagar.id !== item.id)
+        else
+            _debitosSelecionados.push(item);
+        
+        setDebitosSelecionados(_debitosSelecionados);
     }
 
     useEffect(() => {
         getDebito(desbravador.id);
     }, [desbravador, modal]);
 
+
+
+    const renderListItem = (item) => {
+        return (
+            <div className="col-12">
+                <div className="flex flex-column align-items-center p-3 w-full md:flex-row" key={item.id}>
+                    {/* <div className="md:w-3rem  md:my-0 md:mr-5 mr-0 my-5">
+                        <h2 className={formataTipo(item.idtipdebito).color}> {item.desctipo.substring(0,1)}</h2>
+                    </div> */}
+                    <div className="text-center md:text-left md:flex-1">
+                        <div className="text-2xl font-bold">{item.descdebito}</div>
+                        <div className="mb-3">{formataData(item.vctodebito)}</div>
+                    </div>
+                    <div className="flex md:flex-column mt-5 justify-content-between align-items-center md:w-auto w-full">
+                        <span className="align-self-center text-2xl font-semibold mb-2 md:align-self-end">{formataMoeda(item.valordebito)}</span>
+                        <ToggleButton  
+                            name="pagar"
+                            value={item} 
+                            id={item.id} 
+                            checked={debitosSelecionados.some((itemPagar) => item.id === itemPagar.id)} 
+                            onChange={(e) => handleDebitoSelecionado(item)} 
+                            
+                            offLabel="Pagar" 
+                            onIcon="pi pi-check" 
+                            
+
+                            />
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+    const itemTemplate = (debitos) => {
+        return renderListItem(debitos)
+    }
+
     return (
         <div className="p-3">
-            <Accordion open={open} toggle={toggle}>
-                <AccordionItem>
-                    <AccordionHeader targetId="1"><strong>Débitos</strong></AccordionHeader>
-                    <AccordionBody accordionId="1">
-                        <Row>
-                            {debitos.length > 0 ? (
-                                <ListGroup>
-                                    {debitos.map((item) => (
-                                        <ListGroupItem className="groupItem">
-                                            <Row>
-                                                <Col md="2" xs="2" >
-                                                    <h2 className={formataTipo(item.idtipdebito).color} > {formataTipo(item.idtipdebito).tipo.substring(0, 1)}</h2>
-                                                </Col>
-                                                <Col md="8" xs="8">
-                                                    <Row>
-                                                        <Col>
-                                                            <p className="descricao">{item.descdebito}</p>
-                                                        </Col>
-                                                    </Row>
-                                                    <Row>
-                                                        <Col>
-                                                            <p>{formataData(item.vctodebito)}</p>
-                                                        </Col>
-                                                    </Row>
-                                                </Col>
-                                                <Col md="2" xs="2">
-                                                    <h4 className="valor" style={{ float: 'right' }}>{formataMoeda(item.valordebito)}</h4>
-                                                    <FormGroup check style={{ float: 'right' }}>
-                                                        <Input type="checkbox" onClick={handleDebitoSelecionado(item)} />
-                                                    </FormGroup>
-                                                </Col>
-                                            </Row>
-                                        </ListGroupItem>
-                                    )
-                                    )}
-                                </ListGroup>
-                            ) : <Alert color="warning">Não existe debito</Alert>}
-                        </Row>
-                        <Row className="p-3">
-                            <div>
-                                <Button color="primary" style={{ float: 'right' }} onClick={handleDebito}> <i className="bi bi-plus-circle"></i> Débito</Button>
-                            </div>
-                        </Row>
-                    </AccordionBody>
-                </AccordionItem>
-                <AccordionItem>
-                    <AccordionHeader targetId="2">Teste</AccordionHeader>
-                    <AccordionBody accordionId="2">Teste</AccordionBody>
-                </AccordionItem>
+            <Accordion activeIndex={0}>
+                <AccordionTab header="Débitos">
+                    <div>
+                        <div className="card">
+                            {debitos.length > 0 ? (<DataView value={debitos} itemTemplate={itemTemplate} />) : <Message severity="warn" text="Não existem débitos" />}
+                        </div>
+                        <div className="m-3 grid justify-content-end">
+                            <Button color="primary" onClick={handleDebito}> <i className="bi bi-plus-circle"></i> Débito</Button>
+                        </div>
+                    </div>
+                </AccordionTab>
+                <AccordionTab header="Tab 2">
+                    <p>Tab 2</p>
+                </AccordionTab>
             </Accordion>
 
             <Modal isOpen={modal}>

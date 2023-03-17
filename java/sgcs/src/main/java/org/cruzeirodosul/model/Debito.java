@@ -1,5 +1,6 @@
 package org.cruzeirodosul.model;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 import javax.json.bind.annotation.JsonbDateFormat;
@@ -8,53 +9,57 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "debitos")
+@NamedNativeQueries({
+		@NamedNativeQuery(name = "BUSCAR_DEBITO_DE_UM_DESBRAVADOR", query = "SELECT id, idcadastro, idmatricula, descdebito, valordebito, idtipdebito, idpgto, vctodebito FROM debitos WHERE idcadastro =:IDCADASTRO", resultClass = Debito.class), })
 public class Debito {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
 
 	@Column(name = "idcadastro")
-	private Long idcadastro;
+	private Integer idcadastro;
 	@Column(name = "idmatricula")
-	private Long idmatricula;
+	private Integer idmatricula;
 	@Column(name = "descdebito")
 	private String descdebito;
 	@Column(name = "valordebito")
-	private float valordebito;
+	private BigDecimal valordebito;
 	@Column(name = "idtipdebito")
 	private Integer idtipdebito;
 	@Column(name = "vctodebito")
 	@JsonbDateFormat("yyyy-MM-dd")
 	private Date vctodebito;
 	@Column(name = "idpgto")
-	private Long idpgto;
+	private Integer idpgto;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setIddebito(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public Long getIdcadastro() {
+	public Integer getIdcadastro() {
 		return idcadastro;
 	}
 
-	public void setIdcadastro(Long idcadastro) {
+	public void setIdcadastro(Integer idcadastro) {
 		this.idcadastro = idcadastro;
 	}
 
-	public Long getIdmatricula() {
+	public Integer getIdmatricula() {
 		return idmatricula;
 	}
 
-	public void setIdmatricula(Long idmatricula) {
+	public void setIdmatricula(Integer idmatricula) {
 		this.idmatricula = idmatricula;
 	}
 
@@ -66,19 +71,19 @@ public class Debito {
 		this.descdebito = descdebito;
 	}
 
-	public float getValordebito() {
+	public BigDecimal getValordebito() {
 		return valordebito;
 	}
 
-	public void setValordebito(float valordebito) {
+	public void setValordebito(BigDecimal valordebito) {
 		this.valordebito = valordebito;
 	}
 
-	public int getIdtipdebito() {
+	public Integer getIdtipdebito() {
 		return idtipdebito;
 	}
 
-	public void setIdtipdebito(int idtipdebito) {
+	public void setIdtipdebito(Integer idtipdebito) {
 		this.idtipdebito = idtipdebito;
 	}
 
@@ -90,11 +95,11 @@ public class Debito {
 		this.vctodebito = vctodebito;
 	}
 
-	public Long getIdpgto() {
+	public Integer getIdpgto() {
 		return idpgto;
 	}
 
-	public void setIdpgto(Long idpgto) {
+	public void setIdpgto(Integer idpgto) {
 		this.idpgto = idpgto;
 	}
 

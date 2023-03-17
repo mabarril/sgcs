@@ -8,21 +8,21 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.cruzeirodosul.dao.DebitoDao;
 import org.cruzeirodosul.model.Debito;
+import org.cruzeirodosul.service.DebitoService;
 import org.jboss.resteasy.annotations.jaxrs.PathParam;
 
 @Path("/debito")
 public class DebitoResource {
 
 	@Inject
-	private DebitoDao debitoDao;
+	private DebitoService debitoService;
 
 	@GET
 	@Path("{idDesbravador}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Debito> buscarDebitoDesbravador(@PathParam Long idDesbravador) {
-		return debitoDao.buscarDebitoDeUmDesbravador(idDesbravador);
+	public List<Debito> buscarDebitoDesbravador(@PathParam Integer idDesbravador) {
+		return debitoService.buscarDebitoDesbravador(idDesbravador);
 
 	}
 
