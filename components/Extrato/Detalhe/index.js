@@ -190,7 +190,7 @@ export default function Detalhe({ desbravador }) {
 
                                                 <tr key={debito.id}>
                                                     <td>{debito.nome.split(" ", 1)}</td>
-                                                    <td>{debito.desctipo}</td>
+                                                    <td>{debito.descdebito}</td>
                                                     <td>{formataMoeda(debito.valordebito)}</td>
                                                     <td>{formataData(debito.vctodebito)}</td>
                                                     <td>
