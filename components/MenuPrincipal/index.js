@@ -53,14 +53,9 @@ export default function MenuPrincipal() {
                     </Nav>
                 </Collapse>
             </Navbar>
-            <Row md="2" sm="1">
-                <Col md="8" sm="12">
+            <Row>
                     {isExtrato ? <Extrato true /> : null}
                     {isInscricao ? <Inscricao /> : null}
-                </Col>
-                <Col md="4" sm="12">
-                    <Pagamento />
-                </Col>
             </Row>
         </>
     )

@@ -61,7 +61,7 @@ export default function Extrato({ handleShowDebito }) {
                             <Row>
                                 <h3><strong>{desbravador.nome}</strong></h3>
                             </Row>
-                            <Detalhe desbravador={desbravador}></Detalhe>
+                            <Detalhe desbravador={desbravador}></Detalhe> 
                         </>
                     ) : null
                 }
