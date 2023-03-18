@@ -26,6 +26,25 @@ export default function Detalhe({ desbravador }) {
     let resDebito = [];
 
 
+    const postPagamento = async (e) => {
+        e.preventDefault();
+        let debitos = debitosSelecionados.map(item => item.id);
+
+        //await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/pagamento/', values)
+        await axios.post('http://localhost/dbv-api/pagamento/',
+            {
+                ...values,
+                valorPagamento: valorPagamento,
+                debitos: debitos,
+            })
+            .then((response) => {
+                console.log(response);
+                handlePagamento();
+            })
+            .catch((error) => console.error(error));
+    };
+
+
     const getDebito = (idCadastro) => {
         try {
             axios.get('http://localhost/dbv-api/debito/' + idCadastro).then((response) => setDebitos(response.data));
@@ -37,6 +56,15 @@ export default function Detalhe({ desbravador }) {
         setModal(!modal);
     };
 
+    const handlePagamento = () => {
+        setValues([]);
+        setDebitosSelecionados([]);
+        getDebito(desbravador.id);
+        Array.from(document.querySelectorAll("input")).forEach(
+            input => (input.value = "")
+          );
+    };
+
     useEffect(() => {
         let valor = 0;
         debitosSelecionados.forEach(item => {
@@ -44,7 +72,6 @@ export default function Detalhe({ desbravador }) {
         });
         console.log(valor);
         setValorPagamento(valor);
-        console.log(debitosSelecionados);
     }, [debitosSelecionados]);
 
     const formataData = (param) => {
@@ -104,6 +131,11 @@ export default function Detalhe({ desbravador }) {
         }
     }
 
+    const formataBgPagamento = (item) => {
+        if (item.idpgto) return "flex flex-column align-items-center p-1 w-full md:flex-row bg-light"
+        return "flex flex-column align-items-center p-1 w-full md:flex-row"
+    }
+
     useEffect(() => {
         getDebito(desbravador.id);
     }, [desbravador, modal]);
@@ -111,9 +143,10 @@ export default function Detalhe({ desbravador }) {
 
 
     const renderListItem = (item) => {
+        console.log(item);
         return (
             <div className="col-12">
-                <div className="flex flex-column align-items-center p-1 w-full md:flex-row" key={item.id}>
+                <div className={formataBgPagamento(item)} key={item.id}>
                     {/* <div className="md:w-3rem  md:my-0 md:mr-5 mr-0 my-5">
                         <h2 className={formataTipo(item.idtipdebito).color}> {item.desctipo.substring(0,1)}</h2>
                     </div> */}
@@ -123,16 +156,17 @@ export default function Detalhe({ desbravador }) {
                     </div>
                     <div className="flex md:flex-column mt-1 justify-content-between align-items-center md:w-auto w-full">
                         <span className="align-self-center text-2xl font-semibold mb-2 md:align-self-end">{formataMoeda(item.valordebito)}</span>
-                        <ToggleButton
+                        {item.idpgto? <p>pago</p> : <ToggleButton
                             name="pagar"
                             value={item}
                             id={item.id}
                             checked={debitosSelecionados.some((itemPagar) => item.id === itemPagar.id)}
                             onChange={(e) => handleDebitoSelecionado(item, desbravador)}
-
-                            offLabel="Pagar"
-                            onIcon="pi pi-check"
-                        />
+                            onLabel=" Selecionado"
+                            offLabel=" Pagar"
+                            offIcon="pi pi-check"
+                            onIcon="pi pi-times"
+                        />}
                     </div>
                 </div>
             </div>
@@ -148,7 +182,7 @@ export default function Detalhe({ desbravador }) {
             <Row>
                 <Col md="6" sm="12">
                     <Accordion activeIndex={0}>
-                        <AccordionTab header="Débitos">
+                        <AccordionTab header="Extrato">
                             <div>
                                 <div className="card">
                                     {debitos.length > 0 ? (<DataView value={debitos} itemTemplate={itemTemplate} />) : <Message severity="warn" text="Não existem débitos" />}
@@ -158,7 +192,7 @@ export default function Detalhe({ desbravador }) {
                                 </div>
                             </div>
                         </AccordionTab>
-                        <AccordionTab header="Tab 2">
+                        <AccordionTab header="Pagamentos">
                             <p>Tab 2</p>
                         </AccordionTab>
                     </Accordion>
@@ -169,9 +203,9 @@ export default function Detalhe({ desbravador }) {
                         <ModalBody><Debito idCadastro={desbravador.id} handleDebito={handleDebito} /></ModalBody>
                     </Modal>
                 </Col>
-                <Col md="6" sm="12">
-                    <div className="container small " style={{ backgroundColor: '#F5F5F5', }}>
-                        <div className="row justify-content-lg-center" >
+                <Col md="6" sm="12" >
+                    <div className="container small pb-7 " style={{ backgroundColor: '#f8f9fa', borderRadius: '10px' }} size="auto">
+                        <div className="row justify-content-lg-center">
                             <h3 className="pt-3 pb-3 text-center"><strong>Registro de Pagamento</strong></h3>
                             <Table hover responsive size="sm">
                                 <thead>

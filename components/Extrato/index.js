@@ -10,21 +10,6 @@ export default function Extrato({ handleShowDebito }) {
     const [debitos, setDebitos] = useState([]);
 
 
-    const postPagamento = async (e) => {
-        e.preventDefault();
-        setValues({
-            ...values,
-            valorPagamento: valorPagamento,
-            debitos: arrayDebitos
-        });
-        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/pagamento/', values)
-            .then((response) => {
-                console.log(response);
-                handlePagamento(response.data.ID, arrayDebitos);
-            })
-            .catch((error) => console.error(error));
-    };
-
     // const handleSelectDebito = (debito) => {
     //     debito = { ...debito, "nome": dbv.nome };
     //     if (arrayDebitos.filter(item => item.iddebito === debito.iddebito).length === 0) {
