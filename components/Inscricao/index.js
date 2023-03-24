@@ -42,7 +42,7 @@ export default function Inscricao(idCadastro) {
     };
 
     const postInscricao = async () => {
-        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/indvtivso/', values)
+        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/inscricao/', values)
         // await axios.post('http://localhost/dbv-api/inscricao/', values)
     }
 
