@@ -1,16 +1,21 @@
 
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef, useCallback } from "react";
 import { ToggleButton } from 'primereact/togglebutton';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { DataView } from 'primereact/dataview';
 import { Message } from 'primereact/message';
-import { Table, Button, Form, Input, Row, FormGroup, Label, Col, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Table, Button, Form, Input, Row, FormGroup, Label, Col, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import axios from "axios";
 import Debito from "../../Debito";
+import Recibo from "../../Recibo";
+import {useReactToPrint} from "react-to-print";
+import { Link, Route } from "react-router-dom";
+
 
 export default function Detalhe({ desbravador }) {
 
 
+    const componentRef = useRef(null);
     const [debitos, setDebitos] = useState([]);
     const [modal, setModal] = useState(false);
     const [debitosSelecionados, setDebitosSelecionados] = useState([]);
@@ -26,12 +31,13 @@ export default function Detalhe({ desbravador }) {
     let resDebito = [];
 
 
+
     const postPagamento = async (e) => {
         e.preventDefault();
         let debitos = debitosSelecionados.map(item => item.id);
 
-        //await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/pagamento/', values)
-        await axios.post('http://localhost/dbv-api/pagamento/',
+        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/pagamento/',
+        //await axios.post('http://localhost/dbv-api/pagamento/',
             {
                 ...values,
                 valorPagamento: valorPagamento,
@@ -47,7 +53,10 @@ export default function Detalhe({ desbravador }) {
 
     const getDebito = (idCadastro) => {
         try {
-            axios.get('http://localhost/dbv-api/debito/' + idCadastro).then((response) => setDebitos(response.data));
+
+            axios.get('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debito/'
+            //axios.get('http://localhost/dbv-api/debito/' 
+            + idCadastro).then((response) => setDebitos(response.data));
         }
         catch { (error) => console.error(error) };
     };
@@ -62,7 +71,7 @@ export default function Detalhe({ desbravador }) {
         getDebito(desbravador.id);
         Array.from(document.querySelectorAll("input")).forEach(
             input => (input.value = "")
-          );
+        );
     };
 
     useEffect(() => {
@@ -156,7 +165,7 @@ export default function Detalhe({ desbravador }) {
                     </div>
                     <div className="flex md:flex-column mt-1 justify-content-between align-items-center md:w-auto w-full">
                         <span className="align-self-center text-2xl font-semibold mb-2 md:align-self-end">{formataMoeda(item.valordebito)}</span>
-                        {item.idpgto? <p>pago</p> : <ToggleButton
+                        {item.idpgto ? <p>pago</p> : <ToggleButton
                             name="pagar"
                             value={item}
                             id={item.id}
@@ -175,7 +184,17 @@ export default function Detalhe({ desbravador }) {
 
     const itemTemplate = (debitos) => {
         return renderListItem(debitos)
-    }
+    };
+
+    const reactToPrintContent = useCallback(() => {
+        return componentRef.current;
+    }, [componentRef.current]);
+
+    const handlePrint = useReactToPrint({
+        content: reactToPrintContent,
+        documentTitle: "AwesomeFileName",
+        removeAfterPrint: true
+    });
 
     return (
         <div className="p-3">
@@ -297,6 +316,15 @@ export default function Detalhe({ desbravador }) {
                         </Form>
                     </div>
                 </Col>
+
+                {/* <div>
+
+                    <button onClick={handlePrint}>
+                        Print using a Functional Component with the useReactToPrint hook
+                    </button>
+                    {/* component to be printed */}
+                    {/* <Recibo ref={componentRef} /> */}
+                {/* </div> */} 
             </Row>
         </div>
     )

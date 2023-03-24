@@ -2,7 +2,6 @@ import { React, useState } from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Container, Jumbotron, Row, Col } from 'reactstrap';
 import Extrato from '../Extrato';
 import Inscricao from '../Inscricao';
-import Pagamento from '../Pagamento';
 
 export default function MenuPrincipal() {
 

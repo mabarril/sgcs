@@ -30,8 +30,8 @@ export default function ListaCadastro({ setDesbravador, setModal }) {
     }
 
     useEffect(() => {
-        // axios.get('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/cadastros',
-        axios.get('http://localhost/dbv-api/desbravador',
+        axios.get('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/desbravador',
+        // axios.get('http://localhost/dbv-api/desbravador',
         )
             .then(async (response) => {
                 setUser(await response.data);

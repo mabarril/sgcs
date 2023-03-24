@@ -25,7 +25,10 @@ export default function Extrato({ handleShowDebito }) {
 
 
     useEffect(() => {
-        const res = async () => { await axios.get('http://localhost:8080/debito/' + desbravador.id).data };
+        const res = async () => { 
+            await axios.get('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debito/'
+            // await axios.get('http://localhost:8080/debito/'
+             + desbravador.id).data };
         while (debitos.size == 0) {
             if (res.size > 0) {
                 setDebitos(res);
