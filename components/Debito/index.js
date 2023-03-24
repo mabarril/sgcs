@@ -20,7 +20,7 @@ export default function Debito({ idCadastro, handleDebito }) {
 
     const postDebito = async () => {
         console.log(values);
-        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debitos/', values
+        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debito/', values
         );
         handleDebito();
     }
