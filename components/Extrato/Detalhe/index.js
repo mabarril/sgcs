@@ -8,7 +8,6 @@ import { Table, Button, Form, Input, Row, FormGroup, Label, Col, Modal, ModalHea
 import axios from "axios";
 import Debito from "../../Debito";
 import Recibo from "../../Recibo";
-import {useReactToPrint} from "react-to-print";
 import { Link, Route } from "react-router-dom";
 
 
@@ -186,16 +185,6 @@ export default function Detalhe({ desbravador }) {
     const itemTemplate = (debitos) => {
         return renderListItem(debitos)
     };
-
-    const reactToPrintContent = useCallback(() => {
-        return componentRef.current;
-    }, [componentRef.current]);
-
-    const handlePrint = useReactToPrint({
-        content: reactToPrintContent,
-        documentTitle: "AwesomeFileName",
-        removeAfterPrint: true
-    });
 
     return (
         <div className="p-3">

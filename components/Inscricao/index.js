@@ -1,8 +1,8 @@
-import { React, useState, useEffect, useRef } from "react";
 import axios from "axios";
-import ListaCadastro from "../ListaCadastro";
-import { Form, Button, FormGroup, Input, Row, Modal, ModalHeader, ModalBody, Label } from "reactstrap";
 import { Toast } from 'primereact/toast';
+import { React, useEffect, useRef, useState } from "react";
+import { Button, Form, FormGroup, Input, Label, Row } from "reactstrap";
+import ListaCadastro from "../ListaCadastro";
 
 export default function Inscricao(idCadastro) {
 
