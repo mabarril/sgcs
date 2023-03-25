@@ -186,6 +186,8 @@ const itemTemplate = (debitos) => {
 return (
     <div className="p-3">
         <Row>
+            <a href="http://iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/recibo/index.php" target={"_blank"}>Recibo</a>
+
             <Col md="6" sm="12">
                 <Accordion activeIndex={0}>
                     <AccordionTab header="Extrato">
@@ -305,8 +307,6 @@ return (
             </Col>
 
             <div>
-                                        
-                <a href="http://iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/recibo/index.php" target={"_blank"}>Recibo</a>
                         {/* <Recibo /> */}
             </div>
 
