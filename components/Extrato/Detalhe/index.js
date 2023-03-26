@@ -7,7 +7,7 @@ import { ToggleButton } from 'primereact/togglebutton';
 import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Row, Table } from 'reactstrap';
 import logo from "../../../public/logo_clube.jpg";
 import Debito from "../../Debito";
-import Recibo from "../../Recibo";
+// import Recibo from "../../Recibo";
 
 
 export default function Detalhe({ desbravador }) {
@@ -142,6 +142,15 @@ export default function Detalhe({ desbravador }) {
         return "flex flex-column align-items-center p-1 w-full md:flex-row"
     }
 
+    const handleRecibo = (idpgto) => {
+
+        let link = "https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/recibo/recibo_pgto.php/?lancamento=" + idpgto;
+        return (<a href={link}
+            rel="noreferrer"
+            target={"_blank"} >Recibo</a>
+        )
+    }
+
     useEffect(() => {
         getDebito(desbravador.id);
     }, [desbravador, modal]);
@@ -162,7 +171,7 @@ export default function Detalhe({ desbravador }) {
                     </div>
                     <div className="flex md:flex-column mt-1 justify-content-between align-items-center md:w-auto w-full">
                         <span className="align-self-center text-2xl font-semibold mb-2 md:align-self-end">{formataMoeda(item.valordebito)}</span>
-                        {item.idpgto ? <p>pago</p> : <ToggleButton
+                        {item.idpgto ? handleRecibo(item.idpgto) : <ToggleButton
                             name="pagar"
                             value={item}
                             id={item.id}
@@ -175,7 +184,7 @@ export default function Detalhe({ desbravador }) {
                         />}
                     </div>
                 </div>
-            </div>
+            </div >
         );
     };
 
@@ -199,7 +208,8 @@ export default function Detalhe({ desbravador }) {
                             </div>
                         </AccordionTab>
                         <AccordionTab header="Pagamentos">
-                            <a href="http://iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/recibo/index.php"
+                            {/* <a href="http://iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/recibo/index.php" */}
+                            <a href="http://localhost/dbv-api/recibo/recibo_pgto.php/?lancamento=27"
                                 rel="noreferrer"
                                 target={"_blank"} >Recibo</a>
                         </AccordionTab>
