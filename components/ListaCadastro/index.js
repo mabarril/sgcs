@@ -3,23 +3,23 @@ import { React, useEffect, useState } from "react";
 import axios from "axios";
 import { Form, Button, FormGroup, Input, Row, Modal, ModalHeader, ModalBody } from "reactstrap";
 import Extrato from "../Extrato";
-import Debito from "../Debito"
+import Cadastro from "../Cadastro";
 
-export default function ListaCadastro({ setDesbravador, setModal }) {
+export default function ListaCadastro({ setDesbravador }) {
 
     const [user, setUser] = useState([]);
     const [dbv, setDbv] = useState();
 
 
-    // const [modal, setModal] = useState(false);
+    const [modal, setModal] = useState(false);
 
-    // const handleCloseDebito = () => {
-    //     setModal(false);
+    const handleClose = () => {
+        setModal(false);
     //     setExtrato(false);
     //     setExtrato(true);
-    // };
+    };
 
-    // const handleShowDebito = () => setModal(true);
+    const handleCadastro = () => setModal(true);
 
     const handleSelect = (id) => {
         console.log(id);
@@ -56,13 +56,15 @@ export default function ListaCadastro({ setDesbravador, setModal }) {
                         {extrato && idCadastro ? <Extrato idCadastro={idCadastro} dbv={dbv} handleShowDebito={handleShowDebito}/> : ''}
                 </FormGroup> */}
             </Form>
-
-            {/* <Modal isOpen={modal}>
+            <div>
+            <Button color="primary" type="submit" style={{ float: 'right' }} onClick={(e)=>setModal(true)}> <i className="bi bi-person-plus-fill" /> Cadastrar</Button>
+            </div>
+            <Modal isOpen={modal}>
                 <ModalHeader>
                     Débito
                 </ModalHeader>
-                <ModalBody><Debito idCadastro={idCadastro} handleCloseDebito={handleCloseDebito} /></ModalBody>
-            </Modal> */}
+                <ModalBody><Cadastro handleClose={handleClose} /></ModalBody>
+            </Modal>
         </>
     )
 }

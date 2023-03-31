@@ -16,9 +16,7 @@ export default function Detalhe({ desbravador }) {
     const [debitos, setDebitos] = useState([]);
     const [modal, setModal] = useState(false);
     const [debitosSelecionados, setDebitosSelecionados] = useState([]);
-    const [arrayDebitos, setArrayDebitos] = useState([]);
     const [valorPagamento, setValorPagamento] = useState(0);
-    const toast = useRef(null);
     const [img, setImg] = useState();
     const [values, setValues] = useState({
         respPagamento: '',
