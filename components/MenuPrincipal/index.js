@@ -32,6 +32,12 @@ export default function MenuPrincipal() {
 
     return (
         <>
+            <div className="text-center pt-2 web-class header-class">
+                <h3>Sistema de Gerenciamento Cruzeiro do Sul</h3>
+            </div>
+            <div className="text-center pt-2 mobile-class header-class">
+                <h3>SGCS</h3>
+            </div>
             <Navbar color="dark" dark expand="md">
                 <NavbarBrand href="/" onClick={() => handleMain()}><strong>Cruzeiro do Sul</strong></NavbarBrand>
                 <NavbarToggler onClick={() => setIsOpen(!isOpen)} />
@@ -53,8 +59,8 @@ export default function MenuPrincipal() {
                 </Collapse>
             </Navbar>
             <Row>
-                    {isExtrato ? <Extrato true /> : null}
-                    {isInscricao ? <Inscricao /> : null}
+                {isExtrato ? <Extrato true /> : null}
+                {isInscricao ? <Inscricao /> : null}
             </Row>
         </>
     )
