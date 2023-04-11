@@ -2,18 +2,20 @@ import { React, useState } from 'react';
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, Container, Jumbotron, Row, Col } from 'reactstrap';
 import Extrato from '../Extrato';
 import Inscricao from '../Inscricao';
+import PrestacaoContas from '../PrestacaoContas';
 
 export default function MenuPrincipal() {
 
     const [isOpen, setIsOpen] = useState(false);
     const [isExtrato, setIsExtrato] = useState(false);
     const [isInscricao, setIsInscricao] = useState(false);
-
+    const [isPrestacaoContas, setIsPrestacaoContas] = useState(false);
 
     const handleInativa = () => {
         setIsOpen(false);
         setIsExtrato(false);
         setIsInscricao(false);
+        setIsPrestacaoContas(false);
     }
 
     const handleExtrato = () => {
@@ -24,6 +26,11 @@ export default function MenuPrincipal() {
     const handleInscricao = () => {
         handleInativa();
         setIsInscricao(true);
+    }
+
+    const handlePrestacaoContas = () => {
+        handleInativa();
+        setIsPrestacaoContas(true);
     }
 
     const handleMain = () => {
@@ -50,7 +57,7 @@ export default function MenuPrincipal() {
                             <NavLink href="#" onClick={() => handleInscricao()}>Inscrição</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="#">Pagamento</NavLink>
+                            <NavLink href="#" onClick={()=> handlePrestacaoContas()}>Prestacao de Contas</NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink href="#">Débito</NavLink>
@@ -61,6 +68,7 @@ export default function MenuPrincipal() {
             <Row>
                 {isExtrato ? <Extrato true /> : null}
                 {isInscricao ? <Inscricao /> : null}
+                {isPrestacaoContas ? <PrestacaoContas /> : null}
             </Row>
         </>
     )
