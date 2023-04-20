@@ -45,6 +45,45 @@ export default function Detalhe({ desbravador }) {
             .catch((error) => console.error(error));
     };
 
+    async function gerarQrCodePix() {
+
+        //     let link = '00020126360014br.gov.bcb.pix0114+556198225856052040000530398654071000.005802BR5921IASD CENTRAL BRASILIA6008BRASILIA62150511Desbravador63045A5F';
+        //     return (<img src<a href={link}/>
+        //     )
+
+
+        //     async function gerarQrCodePix(valor, chavePix) {
+
+        //         const response = await axios.get('00020126360014br.gov.bcb.pix0114+556198225856052040000530398654071000.005802BR5921IASD CENTRAL BRASILIA6008BRASILIA62150511Desbravador63045A5F');
+
+        //         return response;
+        //     }
+        // }
+
+        const response = await axios.get('https://gerarqrcodepix.com.br/api/v1?nome=IASD%20CENTRAL%20BRASILIA&cidade=BRASILIA&chave=%2B5561982258560&valor=50.00&txid=DESBRAVADOR&saida=br');
+
+        console.log(response.brcode);
+            
+            
+            
+        //     'https://api-pix.gerencianet.com.br/v2/loc/static/qrcode', {
+        //     'chave': chavePix,
+        //     'valor': valor,
+        //     'solicitacaoPagador': 'Pagamento de exemplo',
+        //     'infoAdicionais': [
+        //         { 'nome': 'Nome do pagador', 'valor': 'Fulano de Tal' },
+        //         { 'nome': 'CPF/CNPJ do pagador', 'valor': '123.456.789-00' },
+        //     ]
+        // }, {
+        //     headers: {
+        //         'Authorization': 'Bearer SEU_TOKEN_GERENCIANET',
+        //         'Content-Type': 'application/json',
+        //     }
+        // }
+            // );
+
+    }
+
 
     const getDebito = (idCadastro) => {
         try {
@@ -309,6 +348,7 @@ export default function Detalhe({ desbravador }) {
                                     </FormGroup>
                                 </Col>
                             </Row>
+                            <Button onClick={(e) => gerarQrCodePix()}>PIX</Button>
                             <Button color="primary" type="submit" style={{ float: 'right' }} onClick={(e) => postPagamento(e)}> <i className="bi bi-wallet2" /> Registrar Pagamento</Button>
                         </Form>
                     </div>

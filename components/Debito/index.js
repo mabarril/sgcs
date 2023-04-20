@@ -1,7 +1,8 @@
-import { React, useState, useEffect, Fragment } from "react";
-import { Form, Table, Row, Col, FormGroup, Button, Label } from 'reactstrap';
+import { React, useState, useRef } from "react";
+import { Form, Row, FormGroup, Button, Label } from 'reactstrap';
 import axios from "axios";
 import { Input } from "reactstrap";
+import { Toast } from 'primereact/toast';
 
 export default function Debito({ idCadastro, handleDebito }) {
 
@@ -17,12 +18,27 @@ export default function Debito({ idCadastro, handleDebito }) {
     const [submitted, setSubmitted] = useState(false);
     const [valid, setValid] = useState(false);
     const [valor, setValor] = useState(0);
+    const toast = useRef(null);
+    const [mensagemErro, setMensagemErro] = useState(null);
+
+    const showSuccess = () => {
+        toast.current.show({ severity: 'success', summary: 'Successo', detail: 'Débito cadastrado', life: 3000 });
+    }
+
+    const showError = () => {
+        toast.current.show({ severity: 'error', summary: 'Erro ', detail: 'Débito não cadastradp', life: 3000 });
+    }
 
     const postDebito = async () => {
         console.log(values);
         await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/debito/', values
-        );
-        handleDebito();
+        ).then((response) => {
+            showSuccess();
+            handleDebito();
+        })
+        .catch((error) => {
+            showError()
+        });
     }
 
     const formataData = (param) => {
@@ -53,6 +69,7 @@ export default function Debito({ idCadastro, handleDebito }) {
     };
     return (
         <>
+            <Toast ref={toast} />
             <Form onSubmit={handleSubmit}>
                 <Row>
                     {submitted && <div className="success-message">Débito gravado com sucesso!</div>}
