@@ -5,24 +5,24 @@ import { DataView } from 'primereact/dataview';
 import { Message } from 'primereact/message';
 import { ToggleButton } from 'primereact/togglebutton';
 import { Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalHeader, Row, Table } from 'reactstrap';
-import logo from "../../../public/logo_clube.jpg";
 import Debito from "../../Debito";
-// import Recibo from "../../Recibo";
 
 
 export default function Detalhe({ desbravador }) {
 
 
     const [debitos, setDebitos] = useState([]);
+    const [link, setLink] = useState();
+    const [copiaCola, setCopiaCola] = useState("");
     const [modal, setModal] = useState(false);
     const [debitosSelecionados, setDebitosSelecionados] = useState([]);
     const [valorPagamento, setValorPagamento] = useState(0);
-    const [img, setImg] = useState();
+    const [autorizaPagamento, setAutorizaPagamento] = useState(true);
     const [values, setValues] = useState({
         respPagamento: '',
         dtPagamento: '',
         valorPagamento: 0,
-        tipoPagamento: 3
+        tipoPagamento: 0
     });
 
     let resDebito = [];
@@ -39,7 +39,6 @@ export default function Detalhe({ desbravador }) {
                 debitos: debitos,
             })
             .then((response) => {
-                console.log(response);
                 handlePagamento();
             })
             .catch((error) => console.error(error));
@@ -47,13 +46,17 @@ export default function Detalhe({ desbravador }) {
 
     const gerarQrCodePix = async (e) => {
         e.preventDefault();
-        await axios.get('https://gerarqrcodepix.com.br/api/v1?nome=Cec%C3%ADlia%20Dev%C3%AAza&cidade=Ouro%20Preto&valor=10.00&saida=qr&chave=2aa96c40-d85f-4b98-b29f-d158a1c45f7f&txid=testeCecilia')
-            .then(response => {
-                console.log(response);
+        await axios.post('https://www.iasdcentraldebrasilia.com.br/cruzeirodosul/sgcs/dbv-api/gera-pix/',
+            //await axios.post('http://localhost/dbv-api/pagamento/',
+            {
+                ...values,
+                valorPagamento: valorPagamento,
             })
-            .catch(error => {
-                console.log(error)
-            });
+            .then((response) => {
+                setCopiaCola(response.data);
+            })
+            .catch((error) => console.error(error));
+        setLink("https://gerarqrcodepix.com.br/api/v1?nome=IASD%20CENTRAL%20BRASILIA&cidade=BRASILIA&valor=" + valorPagamento + "&saida=qr&chave=%2B5561982258560&txid=DBV" + values.respPagamento.toUpperCase().replace(" ", ""));
     }
 
 
@@ -85,9 +88,21 @@ export default function Detalhe({ desbravador }) {
         debitosSelecionados.forEach(item => {
             valor = valor + parseFloat(item.valordebito);
         });
-        console.log(valor);
         setValorPagamento(valor);
     }, [debitosSelecionados]);
+
+
+    useEffect(() => {
+        console.log(values);
+        if (values.respPagamento != "" && values.tipoPagamento > 0 && values.dtPagamento != "") {
+            console.log(autorizaPagamento);
+            setAutorizaPagamento(false);
+        } else {
+            console.log(autorizaPagamento);
+            setAutorizaPagamento(true);
+        }
+
+    }, [values])
 
     const formataData = (param) => {
         var data = new Date(param)
@@ -135,7 +150,6 @@ export default function Detalhe({ desbravador }) {
             _debitosSelecionados.push(item);
 
         setDebitosSelecionados(_debitosSelecionados);
-        console.log(debitosSelecionados);
     }
 
     const handleRemoveItemPagamento = (debito) => {
@@ -167,7 +181,6 @@ export default function Detalhe({ desbravador }) {
 
 
     const renderListItem = (item) => {
-        console.log(item);
         return (
             <div className="col-12">
                 <div className={formataBgPagamento(item)} key={item.id}>
@@ -193,7 +206,7 @@ export default function Detalhe({ desbravador }) {
                         />}
                     </div>
                 </div>
-            </div >
+            </div>
         );
     };
 
@@ -311,6 +324,7 @@ export default function Detalhe({ desbravador }) {
                                                 ...values,
                                                 tipoPagamento: e.target.value,
                                             }))}>
+                                            <option key={0} value={0}>Selecione</option>
                                             <option key={3} value={3}>CRÉDITO</option>
                                             <option key={4} value={4}>DÉBITO</option>
                                             <option key={5} value={5}>PIX</option>
@@ -320,9 +334,16 @@ export default function Detalhe({ desbravador }) {
                                     </FormGroup>
                                 </Col>
                             </Row>
-                            {/* <p class="text-center"><img id="qrPix" src="https://gerarqrcodepix.com.br/api/v1?nome=MEMBRO&cidade=BRASILIA&valor=1000.00&saida=qr&chave=%2B5561982258560&txid=DIZIMOAPP" /></p> */}
-                            <Button onClick={(e) => gerarQrCodePix(e)}>PIX</Button>
-                            <Button color="primary" type="submit" style={{ float: 'right' }} onClick={(e) => postPagamento(e)}> <i className="bi bi-wallet2" /> Registrar Pagamento</Button>
+                            <Row>
+                                <p className="text-center"><img id="qrPix" src={link} /></p>
+                                {copiaCola != "" ? <Input type="textarea" rows="4" className="text-center" value={copiaCola} /> : null}
+                            </Row>
+                            <Row className="mt-3">
+                                <div>
+                                    <Button onClick={(e) => gerarQrCodePix(e)} disabled={autorizaPagamento} >PIX</Button>
+                                    <Button color="primary" type="submit" style={{ float: 'right' }} onClick={(e) => postPagamento(e)} disabled={autorizaPagamento}> <i className="bi bi-wallet2" /> Registrar Pagamento</Button>
+                                </div>
+                            </Row>
                         </Form>
                     </div>
                 </Col>
